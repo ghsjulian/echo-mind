@@ -4,6 +4,7 @@ export const url = import.meta.env.VITE_NODE_ENV === "development" ? "http://loc
 axios.defaults.withCredentials = true;
 const api = axios.create({
     baseURL: url,
+    headers: { "cookie": localStorage?.getItem("echomind-user") || null },
     withCredentials: true,
 });
 
