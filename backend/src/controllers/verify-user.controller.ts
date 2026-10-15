@@ -8,8 +8,7 @@ import { parseCookie } from "cookie";
 
 const verifyUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        const cookies = parseCookie(req?.headers?.cookie as string || "");
-        let cookie = cookies?.echomind_user || null
+        let cookie = req?.headers?.authcookie || null
         let currentUser = (req as Request & { user?: User | undefined }).user
 
         if (!currentUser?.user_id) {

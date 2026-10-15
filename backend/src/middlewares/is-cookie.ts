@@ -9,13 +9,15 @@ import crypto from "crypto"
 
 const isCookie = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const cookies = parseCookie(req?.headers?.cookie as string || "");
-        let cookie = cookies?.echomind_user || null
+        //const cookies = parseCookie(req?.headers?.cookie as string || "");
+        let cookie = req?.headers?.authcookie || null
+
+        //  console.log("Check Header : ", cookie)
 
         if (!cookie) {
             res.status(403).json({
                 success: false,
-                cookies: req?.headers || "No cookie",
+                cookies: cookie || "No cookie",
                 message: "User cookie not found"
             })
             return
@@ -40,8 +42,7 @@ const isCookie = async (req: Request, res: Response, next: NextFunction): Promis
             res.status(403).json({ success: false, message: 'Forbidden : Device token mismatch!' });
             return;
         }
-        const request = req as Request & { cookie?: string; user: User };
-        request.cookie = cookie;
+        const request = req as Request & { cookie?: string | undefined; user: User };
         request.user = user;
         next();
     } catch (error) {

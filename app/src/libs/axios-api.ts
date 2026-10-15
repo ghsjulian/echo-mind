@@ -1,11 +1,27 @@
-import axios from "axios"
+import axios from "axios";
 
-export const url = import.meta.env.VITE_NODE_ENV === "development" ? "http://localhost:3000" : "https://echo-mind-zd7k.onrender.com"
-axios.defaults.withCredentials = true;
+// Use Vite's built-in DEV flag or MODE
+export const url = import.meta.env.DEV
+    ? "http://localhost:3000"
+    : "https://echo-mind-zd7k.onrender.com";
+
 const api = axios.create({
     baseURL: url,
-    headers: { "cookie": localStorage?.getItem("echomind-user") || null },
     withCredentials: true,
 });
 
-export default api
+// Use a request interceptor to dynamically get the item on every request
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem("echomind-token");
+        if (token) {
+            config.headers["authCookie"] = token;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+export default api;

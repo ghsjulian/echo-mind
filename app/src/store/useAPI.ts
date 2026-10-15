@@ -46,8 +46,8 @@ const useAPI = create<APIState>((set, get) => ({
             const url = "/api/gen-user";
             const response = await api.post(url);
             if (response?.data?.success) {
-                console.log(response.data)
                 localStorage.setItem("echomind-user", JSON.stringify(response?.data?.user));
+                localStorage.setItem("echomind-token", response?.data?.token);
                 set({ user: response?.data?.user })
                 setTimeout(() => {
                     navigate("/news-feed")
