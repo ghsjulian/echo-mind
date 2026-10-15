@@ -11,8 +11,6 @@ uploads
 uploads/
 upload
 upload/
-app
-app/
 node_modules
 dist
 dist-ssr

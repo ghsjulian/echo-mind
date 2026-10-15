@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse - Social Newsfeed & Emotional AI</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-main: #f0f2f5;
+      --bg-card: #ffffff;
+      --bg-hover: #e4e6eb;
+      --text-primary: #050505;
+      --text-secondary: #65676b;
+      --border-color: #e4e6eb;
+      --accent-color: #0084ff;
+      --accent-gradient: linear-gradient(135deg, #0084ff 0%, #00c6ff 100%);
+      --ai-glow-gradient: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+      --ai-bubble-bg: #f0f8ff;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition-fast: 0.2s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg-main: #18191a;
+      --bg-card: #242526;
+      --bg-hover: #3a3b3c;
+      --text-primary: #e4e6eb;
+      --text-secondary: #b0b3b8;
+      --border-color: #3e4042;
+      --ai-bubble-bg: #26394a;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Top Navigation Bar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 1000;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      font-size: 24px;
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-box {
+      background: var(--bg-main);
+      border-radius: 20px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      color: var(--text-primary);
+      width: 180px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-main);
+      border: none;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background var(--transition-fast);
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-hover);
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    /* Main Grid Layout */
+    .app-container {
+      margin-top: 60px;
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      max-width: 1380px;
+      margin-left: auto;
+      margin-right: auto;
+      gap: 20px;
+      padding: 20px;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* Sidebar Navigation Left */
+    .sidebar-left {
+      position: sticky;
+      top: 80px;
+      height: calc(100vh - 100px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: background var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      background: var(--bg-card);
+    }
+
+    .nav-item i {
+      font-size: 20px;
+      width: 24px;
+      color: var(--accent-color);
+    }
+
+    /* Feed Middle Container */
+    .feed-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Right Sidebar Styling */
+    .sidebar-right {
+      position: sticky;
+      top: 80px;
+      height: calc(100vh - 100px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    /* Emotional AI Card Widget */
+    .ai-widget-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow var(--transition-fast);
+    }
+
+    .ai-widget-header {
+      background: var(--ai-glow-gradient);
+      padding: 16px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .ai-widget-header::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: var(--bg-card);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .ai-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1;
+    }
+
+    .ai-icon-sparkle {
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(8px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      animation: pulseGlow 2.5s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+      100% { transform: scale(1.06); box-shadow: 0 0 14px 4px rgba(255, 255, 255, 0.6); }
+    }
+
+    .ai-header-text h3 {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .ai-header-text span {
+      font-size: 11px;
+      opacity: 0.9;
+    }
+
+    .ai-widget-body {
+      padding: 12px 16px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* AI Conversation Area */
+    .ai-chat-box {
+      max-height: 240px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+    }
+
+    .ai-msg {
+      display: flex;
+      gap: 8px;
+      font-size: 13px;
+      line-height: 1.4;
+      max-width: 90%;
+    }
+
+    .ai-msg.bot {
+      align-self: flex-start;
+    }
+
+    .ai-msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .ai-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .ai-bubble {
+      padding: 10px 12px;
+      border-radius: 14px;
+      word-wrap: break-word;
+    }
+
+    .ai-msg.bot .ai-bubble {
+      background: var(--ai-bubble-bg);
+      color: var(--text-primary);
+      border-top-left-radius: 2px;
+    }
+
+    .ai-msg.user .ai-bubble {
+      background: var(--accent-color);
+      color: #ffffff;
+      border-top-right-radius: 2px;
+    }
+
+    .ai-input-area {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: var(--bg-main);
+      border-radius: 20px;
+      padding: 4px 6px 4px 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .ai-input-area input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    .ai-send-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .ai-send-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* Supporter Matching Card */
+    .supporter-status-card {
+      background: var(--bg-main);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      border: 1px dashed var(--accent-color);
+      display: none; /* hidden until active */
+      flex-direction: column;
+      gap: 8px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .match-loader {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--border-color);
+      border-top: 2px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .supporter-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    .supporter-avatar-wrap {
+      position: relative;
+    }
+
+    .supporter-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      background: #31a24c;
+      border: 2px solid var(--bg-card);
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+
+    .supporter-info h4 {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .supporter-info p {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .supporter-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 14px;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #0073e6;
+    }
+
+    .btn-secondary {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+
+    /* Floating AI Button for Mobile Views */
+    .mobile-ai-fab {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: var(--shadow-lg);
+      border: none;
+      z-index: 1001;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* Mobile Drawer Modal */
+    .ai-drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1100;
+      backdrop-filter: blur(4px);
+    }
+
+    .ai-drawer-overlay.active {
+      display: block;
+    }
+
+    .ai-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-height: 85vh;
+      background: var(--bg-card);
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 20px;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1101;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ai-drawer.active {
+      transform: translateY(0);
+    }
+
+    /* Existing Feed Styles (Stories, Create Post, Cards) */
+    .stories-container {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .story-card {
+      width: 110px;
+      height: 170px;
+      border-radius: var(--radius-md);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .story-card img.story-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .story-card:hover img.story-bg {
+      transform: scale(1.05);
+    }
+
+    .story-card .avatar-thumb {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-color);
+    }
+
+    .story-card span {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+
+    .create-post {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .create-post-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .create-post-top input {
+      flex: 1;
+      background: var(--bg-main);
+      border: none;
+      border-radius: 20px;
+      padding: 12px 16px;
+      outline: none;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .post-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .post-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .post-user-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .post-user-info span {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 400px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid var(--border-color);
+      padding-top: 8px;
+    }
+
+    .action-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: var(--bg-main);
+    }
+
+    .action-btn.liked {
+      color: var(--accent-color);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1080px) {
+      .app-container {
+        grid-template-columns: 80px 1fr 300px;
+      }
+      .nav-item span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+      .sidebar-left, .sidebar-right {
+        display: none;
+      }
+      .mobile-ai-fab {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="brand-logo">
+        <i class="fa-solid fa-bolt"></i> Pulse
+      </div>
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search Pulse...">
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+      <button class="icon-btn" title="Notifications">
+        <i class="fa-solid fa-bell"></i>
+      </button>
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="User Avatar" class="user-avatar">
+    </div>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar-left">
+      <a class="nav-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Newsfeed</span>
+      </a>
+      <a class="nav-item">
+        <i class="fa-solid fa-user-group"></i>
+        <span>Friends</span>
+      </a>
+      <a class="nav-item">
+        <i class="fa-solid fa-heart-pulse"></i>
+        <span>Wellness Hub</span>
+      </a>
+      <a class="nav-item">
+        <i class="fa-solid fa-bookmark"></i>
+        <span>Saved Posts</span>
+      </a>
+      <a class="nav-item">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+      </a>
+    </aside>
+
+    <main class="feed-container">
+      <!-- Stories Bar -->
+      <div class="stories-container">
+        <div class="story-card">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" class="story-bg" alt="Story">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="avatar-thumb" alt="Avatar">
+          <span>Your Story</span>
+        </div>
+        <div class="story-card">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80" class="story-bg" alt="Story">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="avatar-thumb" alt="Avatar">
+          <span>Elena R.</span>
+        </div>
+        <div class="story-card">
+          <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80" class="story-bg" alt="Story">
+          <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" class="avatar-thumb" alt="Avatar">
+          <span>Marcus K.</span>
+        </div>
+      </div>
+
+      <!-- Create Post Box -->
+      <div class="create-post">
+        <div class="create-post-top">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" class="user-avatar" alt="User Avatar">
+          <input type="text" placeholder="What's on your mind today?">
+        </div>
+      </div>
+
+      <!-- Feed Sample Post -->
+      <div class="post-card">
+        <div class="post-header">
+          <div class="post-user">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="user-avatar" alt="Avatar">
+            <div class="post-user-info">
+              <h4>Elena Rostova</h4>
+              <span>2 hours ago · <i class="fa-solid fa-earth-americas"></i></span>
+            </div>
+          </div>
+          <button class="icon-btn"><i class="fa-solid fa-ellipsis"></i></button>
+        </div>
+        <p>Took a long walk in nature today to clear my head. Remind yourself to breathe and take breaks when work gets overwhelming! 🌿✨</p>
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format&fit=crop&q=80" class="post-image" alt="Nature Walk">
+        <div class="post-actions">
+          <button class="action-btn" onclick="toggleLike(this)">
+            <i class="fa-regular fa-heart"></i> Like
+          </button>
+          <button class="action-btn">
+            <i class="fa-regular fa-comment"></i> Comment
+          </button>
+          <button class="action-btn">
+            <i class="fa-regular fa-paper-plane"></i> Share
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <aside class="sidebar-right">
+      <div class="ai-widget-card">
+        <div class="ai-widget-header">
+          <div class="ai-title-wrap">
+            <div class="ai-icon-sparkle">
+              <i class="fa-solid fa-hand-holding-heart"></i>
+            </div>
+            <div class="ai-header-text">
+              <h3>Emotional Support AI</h3>
+              <span>24/7 Compassionate Listener</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-widget-body">
+          <div class="ai-chat-box" id="aiChatBox">
+            <div class="ai-msg bot">
+              <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+              <div class="ai-bubble">
+                Hey! How is your health and mood today? I'm here to listen and help you connect with a friendly supporter if you need one. ❤️
+              </div>
+            </div>
+          </div>
+
+          <!-- Matching Supporter Indicator Status Card -->
+          <div class="supporter-status-card" id="supporterStatusCard">
+            <div class="match-loader" id="matchLoader">
+              <div class="spinner"></div>
+              <span id="matchStatusText">Searching for a compassionate supporter...</span>
+            </div>
+            <div class="supporter-profile" id="supporterProfile" style="display: none;">
+              <div class="supporter-avatar-wrap">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80" class="supporter-avatar" alt="Supporter Avatar" id="supporterImg">
+                <div class="status-dot"></div>
+              </div>
+              <div class="supporter-info">
+                <h4 id="supporterName">Sarah M.</h4>
+                <p id="supporterRole">Peer Listener & Wellness Coach</p>
+              </div>
+            </div>
+            <div class="supporter-actions" id="supporterActions" style="display: none;">
+              <button class="btn-action btn-primary" onclick="startPrivateChat()">
+                <i class="fa-solid fa-comments"></i> Chat Now
+              </button>
+              <button class="btn-action btn-secondary" onclick="startVoiceCall()">
+                <i class="fa-solid fa-phone"></i> Call
+              </button>
+            </div>
+          </div>
+
+          <div class="ai-input-area">
+            <input type="text" id="aiInput" placeholder="Share how you're feeling..." onkeypress="handleKeyPress(event)">
+            <button class="ai-send-btn" onclick="sendEmotionalMessage()">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Mobile Floating Action Button & Drawer -->
+  <button class="mobile-ai-fab" onclick="toggleMobileDrawer()" title="Emotional Support AI">
+    <i class="fa-solid fa-heart-pulse"></i>
+  </button>
+
+  <div class="ai-drawer-overlay" id="drawerOverlay" onclick="toggleMobileDrawer()"></div>
+  <div class="ai-drawer" id="mobileDrawer">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h3 style="font-size:16px; font-weight:700;"><i class="fa-solid fa-hand-holding-heart" style="color:var(--accent-color);"></i> Emotional AI Companion</h3>
+      <button class="icon-btn" onclick="toggleMobileDrawer()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="mobileDrawerContainer"></div>
+  </div>
+
+  <script>
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme');
+      if (currentTheme === 'dark') {
+        document.body.removeAttribute('data-theme');
+        themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      } else {
+        document.body.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      }
+    });
+
+    function toggleLike(btn) {
+      btn.classList.toggle('liked');
+      const icon = btn.querySelector('i');
+      if (btn.classList.contains('liked')) {
+        icon.className = 'fa-solid fa-heart';
+      } else {
+        icon.className = 'fa-regular fa-heart';
+      }
+    }
+
+    // AI Chat & Supporter Routing Workflow
+    const aiChatBox = document.getElementById('aiChatBox');
+    const aiInput = document.getElementById('aiInput');
+    const supporterStatusCard = document.getElementById('supporterStatusCard');
+    const matchLoader = document.getElementById('matchLoader');
+    const matchStatusText = document.getElementById('matchStatusText');
+    const supporterProfile = document.getElementById('supporterProfile');
+    const supporterActions = document.getElementById('supporterActions');
+
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') {
+        sendEmotionalMessage();
+      }
+    }
+
+    function appendMessage(text, isUser = false) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `ai-msg ${isUser ? 'user' : 'bot'}`;
+      
+      const avatarDiv = document.createElement('div');
+      avatarDiv.className = 'ai-avatar';
+      avatarDiv.innerHTML = isUser ? '<i class="fa-solid fa-user"></i>' : '<i class="fa-solid fa-robot"></i>';
+
+      const bubbleDiv = document.createElement('div');
+      bubbleDiv.className = 'ai-bubble';
+      bubbleDiv.innerText = text;
+
+      msgDiv.appendChild(avatarDiv);
+      msgDiv.appendChild(bubbleDiv);
+
+      aiChatBox.appendChild(msgDiv);
+      aiChatBox.scrollTop = aiChatBox.scrollHeight;
+    }
+
+    function sendEmotionalMessage() {
+      const text = aiInput.value.trim();
+      if (!text) return;
+
+      appendMessage(text, true);
+      aiInput.value = '';
+
+      // AI Empathetic Response
+      setTimeout(() => {
+        const response = generateAIResponse(text);
+        appendMessage(response, false);
+        
+        // Initiate Supporter Matching Flow
+        initiateSupporterMatch(text);
+      }, 800);
+    }
+
+    function generateAIResponse(userMsg) {
+      const lower = userMsg.toLowerCase();
+      if (lower.includes('anxious') || lower.includes('stress') || lower.includes('overwhelmed') || lower.includes('sad')) {
+        return "I hear you, and it's completely okay to feel that way. You don't have to carry this alone. Let me connect you with a supporter right now.";
+      } else if (lower.includes('sick') || lower.includes('pain') || lower.includes('headache') || lower.includes('unwell')) {
+        return "I'm sorry you're feeling unwell. Please rest as much as you can. I am routing you to a wellness listener who can offer support.";
+      } else {
+        return "Thank you for sharing that with me. Your emotional health matters. Searching for an available peer supporter to chat with you...";
+      }
+    }
+
+    async function initiateSupporterMatch(userEmotion) {
+      supporterStatusCard.style.display = 'flex';
+      matchLoader.style.display = 'flex';
+      supporterProfile.style.display = 'none';
+      supporterActions.style.display = 'none';
+      matchStatusText.innerText = "Analyzing emotional needs...";
+
+      try {
+        // Backend API simulation call with fetch fallback
+        const response = await fetch('/api/match-supporter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ emotionalState: userEmotion })
+        }).catch(() => null); // Fallback to simulation delay if endpoint is not live
+
+        setTimeout(() => {
+          matchStatusText.innerText = "Searching for available Supporters...";
+        }, 1200);
+
+        setTimeout(() => {
+          // Simulated matched supporter response
+          matchLoader.style.display = 'none';
+          supporterProfile.style.display = 'flex';
+          supporterActions.style.display = 'flex';
+
+          document.getElementById('supporterName').innerText = "Sarah Jenkins, M.S.";
+          document.getElementById('supporterRole').innerText = "Peer Supporter & Certified Listener";
+          document.getElementById('supporterImg').src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80";
+
+          appendMessage("Good news! Sarah Jenkins is available and ready to connect with you.", false);
+        }, 2800);
+
+      } catch (err) {
+        matchStatusText.innerText = "Connected with default supporter.";
+      }
+    }
+
+    function startPrivateChat() {
+      alert("Opening private end-to-end encrypted session with Sarah M...");
+    }
+
+    function startVoiceCall() {
+      alert("Initiating private voice call session...");
+    }
+
+    // Mobile Drawer Navigation
+    function toggleMobileDrawer() {
+      const overlay = document.getElementById('drawerOverlay');
+      const drawer = document.getElementById('mobileDrawer');
+      const container = document.getElementById('mobileDrawerContainer');
+      const widgetCard = document.querySelector('.ai-widget-card');
+
+      overlay.classList.toggle('active');
+      drawer.classList.toggle('active');
+
+      if (drawer.classList.contains('active')) {
+        container.appendChild(widgetCard);
+      } else {
+        document.querySelector('.sidebar-right').appendChild(widgetCard);
+      }
+    }
+  </script>
+</body>
+</html>
