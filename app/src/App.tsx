@@ -18,13 +18,16 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route index path="/" element={<HomePage />} />
+        {/* Fixed: Removed conflicting 'index' prop */}
+        <Route path="/" element={<HomePage />} />
+
         <Route
           path="/news-feed"
           element={user ? <MainApp /> : <Navigate to="/" replace />}
         >
           <Route index element={<NewsFeed />} />
         </Route>
+
         <Route path="/unauthorized-access" element={<UnauthorizedAccess />} />
         <Route
           path="/internal-server-error"
