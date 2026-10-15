@@ -32,11 +32,16 @@ const createUser = async (_req: Request, res: Response): Promise<void> => {
             user = await getUser(userID)
 
             res.cookie("echomind_user", cookie, {
+                // httpOnly: true,
+                // secure: config.NODE_ENV === "production",
+                // sameSite: "none",
+                // maxAge: 360 * 24 * 60 * 60 * 1000,
+                // path: "/",
                 httpOnly: true,
-                secure: config.NODE_ENV === "production",
-                sameSite: "none",
-                maxAge: 360 * 24 * 60 * 60 * 1000,
+                secure: true,       // Required for SameSite=None
+                sameSite: "none",   // Must be 'none' since frontend and backend subdomains differ
                 path: "/",
+                maxAge: 31104000000 // 1 year (matches your Max-Age=31104000)
             });
         } else {
             const userAgent = _req.headers['user-agent'] || _req.get('user-agent') || 'Unknown';
