@@ -15,6 +15,7 @@ const isCookie = async (req: Request, res: Response, next: NextFunction): Promis
         if (!cookie) {
             res.status(403).json({
                 success: false,
+                cookies: req?.headers?.cookie,
                 message: "User cookie not found"
             })
             return
