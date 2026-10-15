@@ -19,7 +19,7 @@ const server = createServer(app);
 
 // Hide Express header
 app.disable("x-powered-by");
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 
 // Set CORS Origin
 app.use(cors(corsOption));

@@ -24,7 +24,7 @@ const verifyUser = async (req: Request, res: Response): Promise<void> => {
         res.cookie("echomind_user", cookie, {
             httpOnly: true,
             secure: config.NODE_ENV === "production",
-            sameSite: "lax",
+            sameSite: "none",
             maxAge: 360 * 24 * 60 * 60 * 1000,
             path: "/",
         });
