@@ -1,10 +1,10 @@
 import { io } from 'socket.io-client';
 import type { User } from '../store/useAPI';
+import { url } from '../libs/axios-api';
 
 
-const SOCKET_URL = "http://localhost:3000"
 const user: User = JSON.parse(localStorage.getItem("echomind-user") as string) || null
-export const socket = io(SOCKET_URL, {
+export const socket = io(url, {
     auth: { userID: user?.user_id },
     autoConnect: false,
     transports: ["websocket", "polling"],
