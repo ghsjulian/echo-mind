@@ -24,8 +24,8 @@ const CreatePost = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    let srcObject = URL.createObjectURL(file);
-    let ext = file.name.split(".").pop() === "mp4" ? "video" : "image";
+    const srcObject = URL.createObjectURL(file);
+    const ext = file.name.split(".").pop() === "mp4" ? "video" : "image";
     setMedia(file);
     setMediaType(ext);
     setPreviewMedia(srcObject);
