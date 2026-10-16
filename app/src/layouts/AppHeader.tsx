@@ -3,7 +3,7 @@ import useAppStore from "../store/useAppStore";
 
 const AppHeader = () => {
   const { toggleTheme, isDark } = useAPI();
-  const { openNotification } = useAppStore();
+  const { openNotification, notifications } = useAppStore();
 
   return (
     <header className="navbar">
@@ -50,7 +50,7 @@ const AppHeader = () => {
         </button>
         <button className="icon-btn" title="Messages">
           <i className="fa-solid fa-paper-plane"></i>
-          <span className="badge-dot"></span>
+          {/* <span className="badge-dot"></span> */}
         </button>
         <button
           onClick={openNotification}
@@ -58,7 +58,9 @@ const AppHeader = () => {
           title="Notifications"
         >
           <i className="fa-solid fa-bell"></i>
-          <span className="badge-dot"></span>
+          {notifications?.length > 0 && (
+            <span className="badge-dot">{notifications?.length}</span>
+          )}
         </button>
         <div className="nav-user">
           <div className="avatar-wrap">

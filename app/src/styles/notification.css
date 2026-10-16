@@ -173,9 +173,9 @@
 
 /* Delete button inside each item */
 .notif-delete-btn {
-  background: transparent;
   border: none;
-  color: #65676b;
+  background: #e4e6eb;
+  color: #e74c3c;
   cursor: pointer;
   padding: 6px;
   border-radius: 50%;

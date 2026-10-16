@@ -1,6 +1,7 @@
 import { Notification, NotificationModel } from "../models/notification.model.js";
 import postModel, { Comment } from "../models/post.model.js";
 import { getSocketById } from "../socket/index.js";
+import getNotification from "./get-notification.js";
 
 const createComment = async (postID: string, comment: Comment): Promise<void> => {
     try {
@@ -20,10 +21,11 @@ const createComment = async (postID: string, comment: Comment): Promise<void> =>
         }
         await NotificationModel.create(notification)
         /* ---IF THE USER IS ONLINE--- */
-        const socket = getSocketById(post?.poster_id)
-        if (socket && comment?.commenter_id !== post?.poster_id) {
-            socket.emit("new-notification", notification)
-        }
+        await getNotification(post?.poster_id)
+        // const socket = getSocketById(post?.poster_id)
+        // if (socket && comment?.commenter_id !== post?.poster_id) {
+        //     socket.emit("new-notification", notification)
+        // }
     } catch (error) {
         console.log("Error while create comment : ", error)
     }

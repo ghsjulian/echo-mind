@@ -17,7 +17,7 @@ const SocketListener = () => {
       fetchPost();
     };
 
-    const handleNewNotification = (notification: Notification) => {
+    const handleNewNotification = (notification: Notification[]) => {
       handleNotification(notification);
     };
 
@@ -29,6 +29,9 @@ const SocketListener = () => {
       setUserProfile(data);
     });
 
+    // Get all notifications
+    socket.on("all-notifications", handleNotification);
+
     // Fetch all post and set
     socket.on("all-post", (data) => {
       console.log("Get All Post -------- ", data);
@@ -39,9 +42,6 @@ const SocketListener = () => {
     socket.on("post-publish:success", (data) => {
       setPost(data);
     });
-
-    // Handle new notification
-    socket.on("new-notification", handleNewNotification);
 
     // Clean up listeners on unmount
     return () => {

@@ -5,6 +5,7 @@ import PostCard from "../components/Post";
 import usePost from "../store/usePost";
 import { type Post } from "../store/usePost";
 import useAppStore from "../store/useAppStore";
+import PostSleleton from "../components/PostSleleton";
 
 const NewsFeed: React.FC = () => {
   const { isProfile } = useAppStore();
@@ -92,9 +93,7 @@ const NewsFeed: React.FC = () => {
               })}
             </div>
           ) : (
-            <p style={{ textAlign: "center", color: "#666" }}>
-              No posts available
-            </p>
+            <PostSleleton />
           )}
 
           {/* Loading indicator */}

@@ -12,6 +12,7 @@ import getUserProfile from '../function/get-user-profile.js';
 import { Comment } from '../models/post.model.js';
 import createComment from '../function/create-comment.js';
 import toggleLike from '../function/like-unlike.js';
+import getNotification from '../function/get-notification.js';
 
 let io: Server | null = null;
 const connections = new Map<string, Socket>();
@@ -65,6 +66,7 @@ const initializeSocket = (httpServer: HttpServer): Server => {
         const user = await UserModel.findOne({ user_id: userID })
         getSocketById(userID)?.emit("connection_ack", user)
         await getUserProfile(userID)
+        await getNotification(userID)
 
 
         // Uploading Post Files

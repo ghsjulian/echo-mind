@@ -30,27 +30,9 @@ const initialNotifications = [
 ];
 
 const NotificationPopup = () => {
-  const { openNotification } = useAppStore();
-  const [notifications, setNotifications] = useState(initialNotifications);
-
-  // Single notification delete
-  const handleDelete = (id: string) => {
-    setNotifications((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  // Toggle read status
-  const toggleRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, read: !item.read } : item,
-      ),
-    );
-  };
-
-  // Delete all
-  const handleClearAll = () => {
-    setNotifications([]);
-  };
+  const { notifications } = useAppStore();
+  const { openNotification, readNotification, deleteNotification } =
+    useAppStore();
 
   return (
     <div className="notif-popup">
@@ -66,11 +48,7 @@ const NotificationPopup = () => {
         </div>
         <div className="notif-header-actions">
           {notifications.length > 0 && (
-            <button
-              className="notif-clear-btn"
-              onClick={handleClearAll}
-              title="Clear all"
-            >
+            <button className="notif-clear-btn" title="Clear all">
               Clear all
             </button>
           )}
@@ -79,7 +57,21 @@ const NotificationPopup = () => {
             className="notif-close-btn"
             title="Close"
           >
-            X
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-x preview-icon"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
           </button>
         </div>
       </div>
@@ -89,16 +81,18 @@ const NotificationPopup = () => {
         {notifications.length > 0 ? (
           notifications.map((item) => (
             <div
-              key={item.id}
+              onClick={() => readNotification(item._id)}
+              key={item._id}
               className={`notif-item ${!item.read ? "unread" : ""}`}
-              onClick={() => toggleRead(item.id)}
             >
-              <img src={item.avatar} alt={item.user} className="notif-avatar" />
+              <img
+                src="/icons/man.png"
+                alt={item.sender_id}
+                className="notif-avatar"
+              />
 
               <div className="notif-body">
-                <p className="notif-text">
-                  <strong>{item.user}</strong> {item.text}
-                </p>
+                <p className="notif-text">{item.text}</p>
                 <span className="notif-time">{item.time}</span>
               </div>
 
@@ -108,10 +102,27 @@ const NotificationPopup = () => {
                 title="Delete notification"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevents triggering toggleRead
-                  handleDelete(item.id);
+                  deleteNotification(item._id);
                 }}
               >
-                trash
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-trash preview-icon"
+                >
+                  <path d="M10 11v6" />
+                  <path d="M14 11v6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                  <path d="M3 6h18" />
+                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
               </button>
 
               {!item.read && <span className="unread-dot" />}
@@ -119,7 +130,23 @@ const NotificationPopup = () => {
           ))
         ) : (
           <div className="notif-empty">
-            Empty Icon Here
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-bell-off preview-icon"
+            >
+              <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+              <path d="M17 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 .258-1.742" />
+              <path d="m2 2 20 20" />
+              <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05" />
+            </svg>
             <p>No notifications left</p>
           </div>
         )}

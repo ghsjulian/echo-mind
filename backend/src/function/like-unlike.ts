@@ -1,6 +1,7 @@
 import { Notification, NotificationModel } from "../models/notification.model.js"
 import postModel from "../models/post.model.js"
 import { getSocketById } from "../socket/index.js"
+import getNotification from "./get-notification.js"
 
 
 const toggleLike = async (postID: string, userID: string): Promise<void> => {
@@ -28,10 +29,11 @@ const toggleLike = async (postID: string, userID: string): Promise<void> => {
             }
             await NotificationModel.create(notification)
             /* ---IF THE USER IS ONLINE--- */
-            const socket = getSocketById(post?.poster_id)
-            if (socket && userID !== post?.poster_id) {
-                socket.emit("new-notification", notification)
-            }
+            await getNotification(post?.poster_id)
+            // const socket = getSocketById(post?.poster_id)
+            // if (socket && userID !== post?.poster_id) {
+            //     socket.emit("new-notification", notification)
+            // }
         }
     } catch (error) {
         console.log("Error while like/unlike : ", error)
