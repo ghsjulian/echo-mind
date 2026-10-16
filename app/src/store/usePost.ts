@@ -86,6 +86,7 @@ const usePost = create<ManagePostState>((set, get) => ({
                     hasMore: !noMore,
                     isLoading: false
                 });
+                console.log("response post : ", response?.latestPost)
             } catch (error) {
                 console.error("Failed to process fetched posts:", error);
                 // Always reset isLoading so the app doesn't break permanently on error
