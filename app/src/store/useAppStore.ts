@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { sendNotification } from "../tools/handle-notification"
+//import { sendNotification } from "../tools/handle-notification"
 
 export interface Notification {
     _id: string
