@@ -14,7 +14,8 @@ const SocketListener = () => {
 
     const handleConnectionAck = (data: any) => {
       setUser(data);
-      // fetchPost();
+      fetchPost();
+      console.log("Fetching Post From Listener : ");
       // console.log("[+] Socket Server Connected ---- ", data);
     };
 

@@ -13,11 +13,17 @@ const NewsFeed: React.FC = () => {
   const parentRef = useRef<HTMLDivElement>(null);
 
   // 1. Fetch initial posts on mount
+  /*
   useEffect(() => {
     if (all_post.length === 0) {
       fetchPost();
     }
   }, [fetchPost, all_post.length]);
+*/
+
+  console.log(all_post);
+
+  return null;
 
   // 2. Initialize dynamic virtualizer (no rigid hardcoded sizing)
   const rowVirtualizer = useVirtualizer({

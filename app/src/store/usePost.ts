@@ -89,6 +89,7 @@ const usePost = create<ManagePostState>((set, get) => ({
                 };
             });
         })
+        // set({ isLoading: false });
     },
     setUserProfile: (data: Profile) => {
         set({ profile: data })

@@ -52,7 +52,7 @@ const useAPI = create<APIState>((set, get) => ({
                 setTimeout(() => {
                     navigate("/news-feed")
                     set({ isCreatingUser: false })
-                }, 3000);
+                }, 100);
             } else {
                 set({ isCreatingUser: false })
                 navigate("/internal-server-error")
@@ -72,7 +72,7 @@ const useAPI = create<APIState>((set, get) => ({
             if (response?.data?.success) {
                 setTimeout(() => {
                     set({ user: parsedUser(response?.data?.user), isVerifying: false })
-                }, 3000);
+                }, 100);
                 return true
             } else {
                 navigate("/unauthorized-access")
