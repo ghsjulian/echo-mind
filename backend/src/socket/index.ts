@@ -13,6 +13,8 @@ import { Comment } from '../models/post.model.js';
 import createComment from '../function/create-comment.js';
 import toggleLike from '../function/like-unlike.js';
 import getNotification from '../function/get-notification.js';
+import updateNoti from '../function/update-noti.js';
+import deleteNoti from '../function/delete-noti.js';
 
 let io: Server | null = null;
 const connections = new Map<string, Socket>();
@@ -89,6 +91,10 @@ const initializeSocket = (httpServer: HttpServer): Server => {
         socket.on("create-comment", async (postID: string, comment: Comment) => {
             await createComment(postID, comment)
         })
+        // when notification read successfully
+        socket.on("read-notification", updateNoti)
+        // when notification deleted successfully
+        socket.on("delete-notification", deleteNoti)
 
         // Handle Disconnect & Cleanup Socket Server
         socket.on('disconnect', (reason) => {

@@ -302,15 +302,15 @@ body {
 
 .badge-dot {
   position: absolute;
-  top: 1px;
-  right: 1px;
-  width: 20px;
-  height: 20px;
+  top: -2px;
+  right: -2px;
+  width: 23px;
+  height: 23px;
   background: #ff3b30;
   color: #fff;
   font-weight: 900;
   font-size: 12px;
-  padding: 2px;
+  padding: 3px;
   border: 2px solid var(--bg-card);
   border-radius: 50%;
 }

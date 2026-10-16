@@ -75,7 +75,13 @@ const usePost = create<ManagePostState>((set, get) => ({
             // Handles both array responses or object responses { posts: [], totalPost: number }
             const posts: Post[] = response?.latestPost || [];
             const total = response?.totalPost;
+            const noMore = posts.length < 5 || (total !== undefined && [...all_post, ...posts].length >= total);
+            set({ all_post: [...all_post, ...posts], hasMore: !noMore, isLoading: false })
 
+            // console.log("Response Post : ", response)
+            // console.log("Combined Posts : ", all_post)
+
+            /*
             set((state) => {
                 const combined = [...state.all_post, ...posts];
                 // If fewer than 5 items are returned or we've hit the total count, mark hasMore as false
@@ -87,8 +93,8 @@ const usePost = create<ManagePostState>((set, get) => ({
                     isLoading: false
                 };
             });
+            */
         })
-        // set({ isLoading: false });
     },
     setUserProfile: (data: Profile) => {
         set({ profile: data })

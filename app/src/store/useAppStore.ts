@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import socket from "../services/socket-sevice"
 //import { sendNotification } from "../tools/handle-notification"
 
 export interface Notification {
@@ -51,11 +52,13 @@ const useAppStore = create<AppState>((set, get) => ({
             return noti;
         });
         set({ notifications: updatedNoti })
+        socket.emit("read-notification", notiID)
     },
     deleteNotification: (notiID: string): void => {
         const { notifications } = get()
         const updatedNoti = notifications.filter((noti) => noti?._id !== notiID || notiID !== noti?._id)
         set({ notifications: updatedNoti })
+        socket.emit("delete-notification", notiID)
     }
 }))
 

@@ -7,7 +7,6 @@ const getNotification = async (userID: string): Promise<void> => {
     try {
         const option = {
             receiver_id: userID,
-            read: false
         }
         const notification = await NotificationModel.find(option).exec()
         // Send all notifications
