@@ -66,35 +66,32 @@ const usePost = create<ManagePostState>((set, get) => ({
     },
     fetchPost: () => {
         const { isLoading, hasMore, all_post } = get();
+
+        // Prevent fetching if already loading or no more posts exist
         if (isLoading || !hasMore) return;
 
         set({ isLoading: true });
 
-        // Pass skip parameter so backend knows how many items to offset
         socket.emit("fetch-post", { limit: 5, skip: all_post.length }, (response: any) => {
-            // Handles both array responses or object responses { posts: [], totalPost: number }
-            const posts: Post[] = response?.latestPost || [];
-            const total = response?.totalPost;
-            const noMore = posts.length < 5 || (total !== undefined && [...all_post, ...posts].length >= total);
-            set({ all_post: [...all_post, ...posts], hasMore: !noMore, isLoading: false })
+            try {
+                // Added fallbacks in case your backend uses 'posts' instead of 'latestPost'
+                const posts: Post[] = response?.latestPost || response?.posts || [];
+                const total = response?.totalPost ?? response?.total;
 
-            // console.log("Response Post : ", response)
-            // console.log("Combined Posts : ", all_post)
+                // Determine if there are no more posts to fetch
+                const noMore = posts.length === 0 || posts.length < 5 || (total !== undefined && all_post.length + posts.length >= total);
 
-            /*
-            set((state) => {
-                const combined = [...state.all_post, ...posts];
-                // If fewer than 5 items are returned or we've hit the total count, mark hasMore as false
-                const noMore = posts.length < 5 || (total !== undefined && combined.length >= total);
-
-                return {
-                    all_post: combined,
+                set({
+                    all_post: [...all_post, ...posts],
                     hasMore: !noMore,
                     isLoading: false
-                };
-            });
-            */
-        })
+                });
+            } catch (error) {
+                console.error("Failed to process fetched posts:", error);
+                // Always reset isLoading so the app doesn't break permanently on error
+                set({ isLoading: false });
+            }
+        });
     },
     setUserProfile: (data: Profile) => {
         set({ profile: data })
