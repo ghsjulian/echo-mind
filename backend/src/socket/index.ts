@@ -60,46 +60,52 @@ const initializeSocket = (httpServer: HttpServer): Server => {
 
     io.on('connection', async (socket: Socket) => {
         // Store Connection
-        const userID = socket.data.userID
+        const userID = socket.data.userID;
         connections.set(userID, socket);
         console.log(`\n[+] Socket Connected : ${userID} | Total Active : ${connections.size}`);
 
-        // Send When Coonected User
-        const user = await UserModel.findOne({ user_id: userID })
-        getSocketById(userID)?.emit("connection_ack", user)
-        await getUserProfile(userID)
-        await getNotification(userID)
+        // Send connection acknowledgment directly using 'socket'
+        const user = await UserModel.findOne({ user_id: userID });
+        socket.emit("connection_ack", user);
 
+        await getUserProfile(userID);
+        await getNotification(userID);
 
         // Uploading Post Files
         socket.on('file-upload:chunk', async (data: ChunkPayload, ack) => {
             await uploadFile(data, ack);
         });
+
         // Publish New Post
         socket.on("publish-post", async (post) => {
-            await publishPost(post, userID)
-        })
+            await publishPost(post, socket.data.userID);
+        });
+
         // Fetch all post
         socket.on("fetch-post", async (data, callback) => {
-            await fetchPost(data?.limit || 5, data?.skip || 0, callback)
-        })
+            await fetchPost(data?.limit || 5, data?.skip || 0, callback);
+        });
+
         // Handle Like/Unlike 
         socket.on("handle-like", async (postID: string) => {
-            await toggleLike(postID, userID)
-        })
+            await toggleLike(postID, socket.data.userID);
+        });
+
         // Create new comment
         socket.on("create-comment", async (postID: string, comment: Comment) => {
-            await createComment(postID, comment)
-        })
+            await createComment(postID, comment);
+        });
+
         // when notification read successfully
-        socket.on("read-notification", updateNoti)
+        socket.on("read-notification", updateNoti);
+
         // when notification deleted successfully
-        socket.on("delete-notification", deleteNoti)
+        socket.on("delete-notification", deleteNoti);
 
         // Handle Disconnect & Cleanup Socket Server
         socket.on('disconnect', (reason) => {
             connections.delete(userID);
-            console.log(`\n[-] User Disconnected :  ${userID}`);
+            console.log(`\n[-] User Disconnected :  ${userID} (Reason: ${reason})`);
         });
 
         // Handle Socket Errors

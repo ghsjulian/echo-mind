@@ -17,39 +17,37 @@ const SocketListener = () => {
       fetchPost();
     };
 
-    const handleNewNotification = (notification: Notification[]) => {
+    const handleUserProfileInfo = (data: any) => {
+      setUserProfile(data);
+    };
+
+    const handleAllNotifications = (notification: Notification[]) => {
       handleNotification(notification);
+    };
+
+    const handleAllPost = (data: any) => {
+      console.log("Get All Post -------- ", data);
+      setAllPost(data);
+    };
+
+    const handlePostPublishSuccess = (data: any) => {
+      setPost(data);
     };
 
     // Attach event listeners
     socket.on("connection_ack", handleConnectionAck);
+    socket.on("user-profile-info", handleUserProfileInfo);
+    socket.on("all-notifications", handleAllNotifications);
+    socket.on("all-post", handleAllPost);
+    socket.on("post-publish:success", handlePostPublishSuccess);
 
-    // Get user profile info
-    socket.on("user-profile-info", (data) => {
-      setUserProfile(data);
-    });
-
-    // Get all notifications
-    socket.on("all-notifications", handleNotification);
-
-    // Fetch all post and set
-    socket.on("all-post", (data) => {
-      console.log("Get All Post -------- ", data);
-      setAllPost(data);
-    });
-
-    // When published a post
-    socket.on("post-publish:success", (data) => {
-      setPost(data);
-    });
-
-    // Clean up listeners on unmount
+    // Clean up listeners on unmount using the exact same handler references
     return () => {
       socket.off("connection_ack", handleConnectionAck);
-      socket.off("user-profile-info", setUserProfile);
-      socket.off("all-post", setAllPost);
-      socket.off("post-publish:success", setPost);
-      socket.off("new-notification", handleNewNotification);
+      socket.off("user-profile-info", handleUserProfileInfo);
+      socket.off("all-notifications", handleAllNotifications);
+      socket.off("all-post", handleAllPost);
+      socket.off("post-publish:success", handlePostPublishSuccess);
     };
   }, [
     fetchPost,
