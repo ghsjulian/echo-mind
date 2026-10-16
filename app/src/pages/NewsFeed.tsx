@@ -21,9 +21,7 @@ const NewsFeed: React.FC = () => {
   }, [fetchPost, all_post.length]);
 */
 
-  console.log(all_post);
-
-  return null;
+  console.log("Post On Newsfeed : ", all_post);
 
   // 2. Initialize dynamic virtualizer (no rigid hardcoded sizing)
   const rowVirtualizer = useVirtualizer({

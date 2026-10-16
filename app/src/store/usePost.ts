@@ -75,7 +75,6 @@ const usePost = create<ManagePostState>((set, get) => ({
             // Handles both array responses or object responses { posts: [], totalPost: number }
             const posts: Post[] = response?.latestPost || [];
             const total = response?.totalPost;
-            console.log("Latest post : ", posts)
 
             set((state) => {
                 const combined = [...state.all_post, ...posts];
