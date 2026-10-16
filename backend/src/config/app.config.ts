@@ -11,6 +11,7 @@ const config = {
     PORT: process.env.PORT || 3000,
     CORS_ORIGIN: process.env.CORS_ORIGIN || "http://localhost:5000",
     MONGO_URI: process.env.MONGO_URI || "mongodb://localhost:27017/echo-mind",
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY || ""
 }
 
 export default config

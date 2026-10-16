@@ -29,7 +29,7 @@ const toggleLike = async (postID: string, userID: string): Promise<void> => {
             await NotificationModel.create(notification)
             /* ---IF THE USER IS ONLINE--- */
             const socket = getSocketById(post?.poster_id)
-            if (socket) {
+            if (socket && userID !== post?.poster_id) {
                 socket.emit("new-notification", notification)
             }
         }
