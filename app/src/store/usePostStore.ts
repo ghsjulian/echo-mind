@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import socket from "../services/socket-sevice";
-import usePost from "./usePost";
+//import usePost from "./usePost";
 
 interface UploadAckResponse {
     success: boolean;
@@ -109,7 +109,7 @@ const usePostStore = create<PostState>((set, get) => ({
                 post_media: get().uploadResponse ? get().uploadResponse?.filePath : ""
             }
             socket.emit("publish-post", finalPost)
-            usePost.getState().fetchPost()
+            // usePost.getState().fetchPost()
             set({
                 message: "Post published successfully",
                 published: true,

@@ -55,11 +55,11 @@ const usePost = create<ManagePostState>((set, get) => ({
     selectedPost: null,
 
     setPost: (data: any) => {
-        set({
-            totalPost: data?.totalPost || 0,
-            all_post: data?.latestPost || [],
-            hasMore: (data?.latestPost?.length || 0) < (data?.totalPost || 0)
-        })
+        console.log("Incomming Posts After : ", data?.post)
+        const { all_post } = get()
+        let tempPost = all_post
+        tempPost.unshift(data?.post)
+        set({ all_post: tempPost })
     },
     setAllPost: (posts) => {
         set({ all_post: posts })

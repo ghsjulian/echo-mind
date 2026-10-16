@@ -21,8 +21,6 @@ const NewsFeed: React.FC = () => {
   }, [fetchPost, all_post.length]);
 */
 
-  console.log("Post On Newsfeed : ", all_post);
-
   // 2. Initialize dynamic virtualizer (no rigid hardcoded sizing)
   const rowVirtualizer = useVirtualizer({
     count: all_post.length,
@@ -58,7 +56,12 @@ const NewsFeed: React.FC = () => {
           }}
         >
           <CreatePost />
-          {all_post && all_post.length > 0 ? (
+          {/* {isLoading && (
+            <p style={{ textAlign: "center", color: "#666" }}>
+              Loading posts...
+            </p>
+          )} */}
+          {!isLoading && all_post && all_post.length > 0 ? (
             <div
               style={{
                 height: `${rowVirtualizer.getTotalSize()}px`,
@@ -90,7 +93,7 @@ const NewsFeed: React.FC = () => {
             </div>
           ) : (
             <p style={{ textAlign: "center", color: "#666" }}>
-              {isLoading ? "Loading posts..." : "No posts available."}
+              No posts available
             </p>
           )}
 
