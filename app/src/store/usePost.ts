@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import socket from "../services/socket-sevice"
 import useAPI from "./useAPI"
+import api from "../libs/axios-api"
 
 export interface Profile {
     totalPost: number
@@ -46,6 +47,7 @@ interface ManagePostState {
     openComment: (post: Post | null) => void;
     createComment: (comment: string) => void;
     addPostComment: (postID: string, comment: Comment, allComments?: Comment[]) => void;
+    getPost: () => void
 }
 
 const usePost = create<ManagePostState>((set, get) => ({
@@ -205,6 +207,21 @@ const usePost = create<ManagePostState>((set, get) => ({
         set({ all_post: updatedPosts })
         set({ selectedPost: updatedPosts.filter((post) => post._id === selectedPost?._id)[0] })
         socket.emit("create-comment", selectedPost?._id, tempComment)
+    },
+    getPost: async () => {
+        try {
+            set({ isLoading: true })
+            const url = "/api/posts";
+            const response = await api.get(url);
+            if (response?.data?.posts?.length > 0) {
+                set({ all_post: response?.data?.posts, isLoading: false })
+            } else {
+                set({ all_post: [], isLoading: false })
+            }
+        } catch (error) {
+            set({ isLoading: false })
+            console.log("Faild to get post : ", error)
+        }
     }
 }))
 

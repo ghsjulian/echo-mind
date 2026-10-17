@@ -26,6 +26,7 @@ const SocketListener = () => {
     setUserProfile,
     updatePostLikes,
     addPostComment,
+    getPost,
   } = usePost();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const SocketListener = () => {
     const handleConnectionAck = (data: any) => {
       setUser(data);
       fetchPost();
+      getPost();
     };
 
     const handleUserProfileInfo = (data: any) => {

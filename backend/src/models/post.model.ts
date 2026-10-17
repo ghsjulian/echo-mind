@@ -52,8 +52,10 @@ const postSchema = new Schema<Post>({
         }
     ],
     shares: [{ type: String }]
-}, { timestamps: true })
+}, { timestamps: true });
 
-const postModel = model<Post>("Post", postSchema)
+postSchema.index({ createdAt: -1 });
+
+const postModel = model<Post>("Post", postSchema);
 
 export default postModel
