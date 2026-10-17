@@ -27,22 +27,25 @@ export type Post = {
 }
 
 interface ManagePostState {
-    totalPost: number
-    all_post: Post[]
-    hasMore: boolean
-    isLoading: boolean
-    profile: Profile | null
-    isOpenComment: boolean
-    selectedPost: Post | null
+    totalPost: number;
+    all_post: Post[];
+    hasMore: boolean;
+    isLoading: boolean;
+    profile: Profile | null;
+    isOpenComment: boolean;
+    selectedPost: Post | null;
 
-    setPost: (data: any) => void
-    setAllPost: (posts: any) => void
-    fetchPost: () => void
-    setUserProfile: (data: Profile) => void
-    toggleLike: (postID: string) => void
-    isLiked: (postID: string) => boolean
-    openComment: (post: Post | null) => void,
-    createComment: (comment: string) => void
+    setPost: (data: any) => void;
+    addNewPost: (newPost: Post) => void;
+    setAllPost: (posts: any) => void;
+    fetchPost: () => void;
+    setUserProfile: (data: Profile) => void;
+    toggleLike: (postID: string) => void;
+    updatePostLikes: (postID: string, likes: string[]) => void;
+    isLiked: (postID: string) => boolean;
+    openComment: (post: Post | null) => void;
+    createComment: (comment: string) => void;
+    addPostComment: (postID: string, comment: Comment, allComments?: Comment[]) => void;
 }
 
 const usePost = create<ManagePostState>((set, get) => ({
@@ -55,11 +58,41 @@ const usePost = create<ManagePostState>((set, get) => ({
     selectedPost: null,
 
     setPost: (data: any) => {
-        console.log("Incomming Posts After : ", data?.post)
-        const { all_post } = get()
-        let tempPost = all_post
-        tempPost.unshift(data?.post)
-        set({ all_post: tempPost })
+        if (!data?.post) return;
+        const { all_post } = get();
+        if (!all_post.some((p) => p._id === data.post._id)) {
+            set({ all_post: [data.post, ...all_post] });
+        }
+    },
+    addNewPost: (newPost: Post) => {
+        if (!newPost?._id) return;
+        const { all_post } = get();
+        if (!all_post.some((p) => p._id === newPost._id)) {
+            set({ all_post: [newPost, ...all_post] });
+        }
+    },
+    updatePostLikes: (postID: string, likes: string[]) => {
+        const { all_post, selectedPost } = get();
+        const updated = all_post.map((p) => (p._id === postID ? { ...p, likes } : p));
+        set({ all_post: updated });
+        if (selectedPost && selectedPost._id === postID) {
+            set({ selectedPost: { ...selectedPost, likes } });
+        }
+    },
+    addPostComment: (postID: string, comment: Comment, allComments?: Comment[]) => {
+        const { all_post, selectedPost } = get();
+        const updated = all_post.map((p) => {
+            if (p._id === postID) {
+                const comments = allComments || [...(p.comments || []), comment];
+                return { ...p, comments };
+            }
+            return p;
+        });
+        set({ all_post: updated });
+        if (selectedPost && selectedPost._id === postID) {
+            const comments = allComments || [...(selectedPost.comments || []), comment];
+            set({ selectedPost: { ...selectedPost, comments } });
+        }
     },
     setAllPost: (posts) => {
         set({ all_post: posts })

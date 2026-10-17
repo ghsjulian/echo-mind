@@ -1,51 +1,54 @@
 import { Request, Response } from "express";
 import config from "../config/app.config.js";
-import { User } from "../models/user.model.js";
-import { parseCookie } from "cookie";
-
-
-
+import { User, UserModel } from "../models/user.model.js";
 
 const verifyUser = async (req: Request, res: Response): Promise<void> => {
     try {
-        let cookie = req?.headers?.authcookie || null
-        let currentUser = (req as Request & { user?: User | undefined }).user
+        const cookie =
+            (req as Request & { cookie?: string }).cookie ||
+            (req.headers["authcookie"] as string) ||
+            (req.headers["authCookie"] as string) ||
+            null;
+
+        const currentUser = (req as Request & { user?: User | undefined }).user;
 
         if (!currentUser?.user_id) {
             res.status(404).json({
                 success: false,
                 message: "User ID Not Found",
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
             });
             return;
         }
 
-        res.cookie("echomind_user", cookie, {
-            // httpOnly: true,
-            // secure: config.NODE_ENV === "production",
-            // sameSite: "none",
-            // maxAge: 360 * 24 * 60 * 60 * 1000,
-            // path: "/",
-            httpOnly: true,
-            secure: true,       // Required for SameSite=None
-            sameSite: "none",   // Must be 'none' since frontend and backend subdomains differ
-            path: "/",
-            maxAge: 31104000000 // 1 year (matches your Max-Age=31104000)
-        });
+        // Keep active status updated
+        await UserModel.updateOne({ user_id: currentUser.user_id }, { $set: { active_status: true } });
+
+        const isProd = config.NODE_ENV === "production";
+        if (cookie) {
+            res.cookie("echomind_user", cookie, {
+                httpOnly: true,
+                secure: isProd,
+                sameSite: isProd ? "none" : "lax",
+                path: "/",
+                maxAge: 365 * 24 * 60 * 60 * 1000,
+            });
+        }
+
         res.status(200).json({
             success: true,
             user: currentUser,
-            message: "User Verfied Successfully",
-            timestamp: new Date().toISOString()
+            message: "User Verified Successfully",
+            timestamp: new Date().toISOString(),
         });
     } catch (error) {
-        console.log(error)
-        res.status(200).json({
+        console.error("Error in verifyUser controller:", error);
+        res.status(500).json({
             success: false,
-            message: "User Verfied Failed",
-            timestamp: new Date().toISOString()
+            message: "User Verification Failed",
+            timestamp: new Date().toISOString(),
         });
     }
-}
+};
 
-export default verifyUser
+export default verifyUser;

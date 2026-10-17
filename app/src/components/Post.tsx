@@ -37,7 +37,15 @@ const PostCard = ({ post }: { post: Post }) => {
 
       {post?.post_media && (
         <div className="post-media">
-          <img src={url + post.post_media} alt="Design Art" />
+          {post.post_media.endsWith(".mp4") ? (
+            <video
+              src={url + post.post_media}
+              controls
+              style={{ width: "100%", maxHeight: "420px", display: "block", borderRadius: "var(--radius-md)" }}
+            />
+          ) : (
+            <img src={url + post.post_media} alt="Post attachment" />
+          )}
         </div>
       )}
 
@@ -49,11 +57,11 @@ const PostCard = ({ post }: { post: Post }) => {
           <span className="reaction-badge reaction-heart">
             <i className="fa-solid fa-heart"></i>
           </span>
-          <span style={{ marginLeft: "8px" }}>{post.likes.length} Likes</span>
+          <span style={{ marginLeft: "8px" }}>{(post.likes || []).length} Likes</span>
         </div>
         <div>
           <span>
-            {post.comments.length} Comments • {post.shares.length} Shares
+            {(post.comments || []).length} Comments • {(post.shares || []).length} Shares
           </span>
         </div>
       </div>

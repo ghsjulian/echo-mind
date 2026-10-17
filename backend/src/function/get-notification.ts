@@ -8,7 +8,7 @@ const getNotification = async (userID: string): Promise<void> => {
         const option = {
             receiver_id: userID,
         }
-        const notification = await NotificationModel.find(option).exec()
+        const notification = await NotificationModel.find(option).sort({ createdAt: -1 }).exec()
         // Send all notifications
         const socket = getSocketById(userID)
         if (socket) {

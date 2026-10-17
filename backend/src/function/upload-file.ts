@@ -20,9 +20,14 @@ const uploadFile = async (file: ChunkPayload, ack?: AckCallback): Promise<void> 
 
         const uploadPath = path.join(uploadsDir, fileName);
 
-        // Convert chunk to Node.js Buffer and append
+        // Convert chunk to Node.js Buffer and append/write
         const chunkBuffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk as ArrayBuffer);
-        appendFileSync(uploadPath, chunkBuffer);
+        if (offset === 0) {
+            const { writeFileSync } = await import("node:fs");
+            writeFileSync(uploadPath, chunkBuffer);
+        } else {
+            appendFileSync(uploadPath, chunkBuffer);
+        }
 
         const currentSize = offset + chunkBuffer.length;
 

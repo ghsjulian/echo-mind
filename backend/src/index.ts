@@ -57,19 +57,37 @@ app.use(globalErrorHandler);
 // Server Listener & Graceful Shutdown
 const start = async (): Promise<void> => {
     try {
-        await connectDB()
-        initializeSocket(server)
+        await connectDB();
+        initializeSocket(server);
         server.listen(config.PORT, printBanner);
-        const shutdown = (signal: string): void => {
+
+        const shutdown = async (signal: string): Promise<void> => {
             console.log(`\n[*] ${signal} signal received. Shutting down gracefully...`);
+            server.close(async () => {
+                console.log("[*] HTTP & WebSocket server closed.");
+                try {
+                    const mongoose = (await import("mongoose")).default;
+                    await mongoose.connection.close();
+                    console.log("[*] MongoDB connection closed.");
+                } catch (e) {
+                    console.error("Error closing DB:", e);
+                }
+                process.exit(0);
+            });
+
+            setTimeout(() => {
+                console.error("[!] Force exit after timeout");
+                process.exit(1);
+            }, 10000);
         };
+
         process.on("SIGINT", () => shutdown("SIGINT"));
         process.on("SIGTERM", () => shutdown("SIGTERM"));
     } catch (error) {
         console.error("[!] Server could not be started:", error);
         process.exit(1);
     }
-}
+};
 
 void start();
 export default app;

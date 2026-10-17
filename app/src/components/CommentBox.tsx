@@ -174,18 +174,16 @@ const CommentBox = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (!comment || comment !== "") {
-                    createComment(comment);
-                    setComment("");
-                  }
+                if (e.key === "Enter" && comment.trim()) {
+                  createComment(comment.trim());
+                  setComment("");
                 }
               }}
             />
             <button
               onClick={() => {
-                if (!comment || comment !== "") {
-                  createComment(comment);
+                if (comment.trim()) {
+                  createComment(comment.trim());
                   setComment("");
                 }
               }}

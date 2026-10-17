@@ -1,117 +1,117 @@
 import React, { useEffect, useRef } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
 import CreatePost from "../components/CreatePost";
 import PostCard from "../components/Post";
-import usePost from "../store/usePost";
-import { type Post } from "../store/usePost";
-import useAppStore from "../store/useAppStore";
+import usePost, { type Post } from "../store/usePost";
 import PostSleleton from "../components/PostSleleton";
 
 const NewsFeed: React.FC = () => {
-  const { isProfile } = useAppStore();
   const { all_post, fetchPost, hasMore, isLoading } = usePost();
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
-  const parentRef = useRef<HTMLDivElement>(null);
-
-  // 1. Fetch initial posts on mount
-  /*
+  // Setup infinite scroll observer for the sentinel element at the bottom of the feed
   useEffect(() => {
-    if (all_post.length === 0) {
-      fetchPost();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          fetchPost();
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    const currentTarget = observerRef.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
     }
-  }, [fetchPost, all_post.length]);
-*/
 
-  // 2. Initialize dynamic virtualizer (no rigid hardcoded sizing)
-  const rowVirtualizer = useVirtualizer({
-    count: all_post.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 250, // Fallback initial estimate, auto-corrected on measure
-    overscan: 5,
-  });
-
-  const virtualItems = rowVirtualizer.getVirtualItems();
-
-  // 3. Infinite Scroll Trigger
-  useEffect(() => {
-    const lastItem = virtualItems[virtualItems.length - 1];
-    if (!lastItem) return;
-
-    if (lastItem.index >= all_post.length - 2 && hasMore && !isLoading) {
-      fetchPost();
-    }
-  }, [virtualItems, all_post.length, hasMore, isLoading, fetchPost]);
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoading, fetchPost]);
 
   return (
-    <>
-      {!isProfile && (
-        <div
-          ref={parentRef}
-          style={{
-            maxWidth: "100%",
-            margin: "0 auto",
-            padding: "0",
-            height: "700px",
-            overflowY: "auto",
-            contain: "strict",
-          }}
-        >
-          <CreatePost />
-          {/* {isLoading && (
-            <p style={{ textAlign: "center", color: "#666" }}>
-              Loading posts...
-            </p>
-          )} */}
-          {!isLoading && all_post && all_post.length > 0 ? (
-            <div
-              style={{
-                height: `${rowVirtualizer.getTotalSize()}px`,
-                width: "100%",
-                position: "relative",
-              }}
-            >
-              {virtualItems.map((virtualRow) => {
-                const post: Post = all_post[virtualRow.index];
-                if (!post) return null;
+    <div
+      style={{
+        maxWidth: "100%",
+        margin: "0 auto",
+        padding: "0",
+        minHeight: "85vh",
+      }}
+    >
+      <CreatePost />
 
-                return (
-                  <div
-                    key={virtualRow.key}
-                    data-index={virtualRow.index}
-                    ref={rowVirtualizer.measureElement} // Measures real height automatically without touching PostCard styles
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      transform: `translateY(${virtualRow.start}px)`,
-                    }}
-                  >
-                    <PostCard post={post} />
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <PostSleleton />
-          )}
-
-          {/* Loading indicator */}
-          {isLoading && all_post.length > 0 && (
-            <p style={{ textAlign: "center", color: "#666", padding: "15px" }}>
-              Loading more posts...
-            </p>
-          )}
-
-          {/* No more posts indicator */}
-          {!hasMore && all_post.length > 0 && (
-            <p style={{ textAlign: "center", color: "#888", padding: "20px" }}>
-              No more posts
-            </p>
-          )}
+      {/* Initial loading state */}
+      {isLoading && all_post.length === 0 && (
+        <div>
+          <PostSleleton />
+          <br />
+          <PostSleleton />
         </div>
       )}
-    </>
+
+      {/* Empty State */}
+      {!isLoading && all_post.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "40px 20px",
+            background: "var(--bg-card)",
+            borderRadius: "var(--radius-lg)",
+            border: "1px solid var(--border-color)",
+            marginTop: "16px",
+          }}
+        >
+          <div style={{ fontSize: "36px", marginBottom: "12px" }}>🌿</div>
+          <h3
+            style={{ fontSize: "17px", fontWeight: "700", marginBottom: "6px" }}
+          >
+            The Safe Space is Quiet
+          </h3>
+          <p style={{ fontSize: "14px", color: "var(--text-secondary)" }}>
+            No posts here yet. Express how you feel or share a comforting
+            thought anonymously above!
+          </p>
+        </div>
+      )}
+
+      {/* Posts Stream */}
+      {all_post.map((post: Post) => (
+        <PostCard key={post._id} post={post} />
+      ))}
+
+      {/* Infinite Scroll Sentinel */}
+      <div ref={observerRef} style={{ height: "20px", margin: "10px 0" }} />
+
+      {/* Loading more indicator */}
+      {isLoading && all_post.length > 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "16px",
+            color: "var(--text-secondary)",
+          }}
+        >
+          <p style={{ fontSize: "13px" }}>Loading more echoes...</p>
+        </div>
+      )}
+
+      {/* End of feed indicator */}
+      {!hasMore && all_post.length > 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            color: "var(--text-muted)",
+          }}
+        >
+          <p style={{ fontSize: "13px" }}>
+            You've caught up with all anonymous echoes. ✨
+          </p>
+        </div>
+      )}
+    </div>
   );
 };
 

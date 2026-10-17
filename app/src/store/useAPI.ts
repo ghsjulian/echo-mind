@@ -30,15 +30,28 @@ interface APIState {
     toggleTheme: () => void
 }
 
-const echomind_user: User = JSON.parse(localStorage.getItem("echomind-user") as string) || null
-const theme = localStorage.getItem("theme")
+const getInitialUser = (): User | null => {
+    try {
+        const raw = localStorage.getItem("echomind-user");
+        if (raw && raw !== "undefined" && raw !== "null") {
+            return JSON.parse(raw);
+        }
+    } catch {
+        return null;
+    }
+    return null;
+};
+
+const echomind_user: User | null = getInitialUser();
+const theme = localStorage.getItem("theme");
+
 const useAPI = create<APIState>((set, get) => ({
     user: echomind_user,
     isCreatingUser: false,
     isVerifying: true,
     navigate: null,
     theme: theme || "light",
-    isDark: theme === "dark" ? true : false || false,
+    isDark: theme === "dark",
 
     initializeUser: async (navigate): Promise<void> => {
         try {

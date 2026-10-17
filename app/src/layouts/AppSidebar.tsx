@@ -4,7 +4,7 @@ import usePost from "../store/usePost";
 
 const AppSidebar = () => {
   const { user } = useAPI();
-  const { isProfile } = useAppStore();
+  const { isProfile, openAI } = useAppStore();
   const { totalPost, profile } = usePost();
 
   return (
@@ -17,14 +17,14 @@ const AppSidebar = () => {
             className="profile-avatar-large"
             alt="Profile"
           />
-          <p className="profile-active-status">ACTIVE NOW</p>
+          <p className="profile-active-status">● ACTIVE NOW</p>
           <p className="profile-handle">@{user?.user_id}</p>
           <h3 className="profile-name">{user?.user_id}</h3>
 
           <div className="profile-stats">
             <div className="stat-item">
               <div className="stat-value">
-                {profile?.followers || user?.user_followers.length}
+                {profile?.followers || user?.user_followers?.length || 0}
               </div>
               <div className="stat-label">Followers</div>
             </div>
@@ -47,6 +47,18 @@ const AppSidebar = () => {
           <li className="menu-item active">
             <a href="#">
               <i className="fa-solid fa-newspaper"></i> News Feed
+            </a>
+          </li>
+          <li className="menu-item">
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                openAI();
+              }}
+              style={{ color: "var(--accent-color)", fontWeight: "700" }}
+            >
+              <i className="fa-solid fa-heart-pulse"></i> AI & Secret Chat
             </a>
           </li>
           <li className="menu-item">

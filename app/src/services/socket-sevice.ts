@@ -1,21 +1,34 @@
-import { io } from 'socket.io-client';
-import type { User } from '../store/useAPI';
-import { url } from '../libs/axios-api';
+import { io, Socket } from "socket.io-client";
+import { url } from "../libs/axios-api";
 
-const user: User = JSON.parse(localStorage.getItem("echomind-user") as string) || null
-
-export const socket = io(url, {
-    auth: { userID: user?.user_id },
+export const socket: Socket = io(url, {
     autoConnect: false,
     transports: ["websocket", "polling"],
     withCredentials: true,
     reconnection: true,
-    reconnectionAttempts: Infinity, // Tries reconnecting indefinitely like social media apps
-    reconnectionDelay: 1000,        // Start retrying after 1 second
-    reconnectionDelayMax: 10000,    // Cap the maximum delay between retries to 10 seconds
+    reconnectionAttempts: Infinity,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 10000,
 });
 
 export const connectSocket = (): void => {
+    const token = localStorage.getItem("echomind-token");
+    let userID: string | undefined = undefined;
+    try {
+        const userStr = localStorage.getItem("echomind-user");
+        if (userStr) {
+            const parsed = JSON.parse(userStr);
+            userID = parsed?.user_id;
+        }
+    } catch {
+        userID = undefined;
+    }
+
+    socket.auth = {
+        token: token || undefined,
+        userID,
+    };
+
     if (!socket.connected) {
         socket.connect();
     }
@@ -27,4 +40,4 @@ export const disconnectSocket = (): void => {
     }
 };
 
-export default socket
+export default socket;

@@ -1,10 +1,15 @@
 import "../styles/notification.css";
 import useAppStore from "../store/useAppStore";
+import formatTimeAgo from "../tools/time-formating";
 
 const NotificationPopup = () => {
-  const { notifications } = useAppStore();
-  const { openNotification, readNotification, deleteNotification } =
-    useAppStore();
+  const {
+    notifications,
+    openNotification,
+    readNotification,
+    deleteNotification,
+    clearAllNotifications,
+  } = useAppStore();
 
   return (
     <div className="notif-popup">
@@ -20,7 +25,11 @@ const NotificationPopup = () => {
         </div>
         <div className="notif-header-actions">
           {notifications.length > 0 && (
-            <button className="notif-clear-btn" title="Clear all">
+            <button
+              onClick={clearAllNotifications}
+              className="notif-clear-btn"
+              title="Clear all"
+            >
               Clear all
             </button>
           )}
@@ -65,7 +74,7 @@ const NotificationPopup = () => {
 
               <div className="notif-body">
                 <p className="notif-text">{item.text}</p>
-                <span className="notif-time">{item.time}</span>
+                <span className="notif-time">{formatTimeAgo(item.time)}</span>
               </div>
 
               {/* Individual Delete Action */}

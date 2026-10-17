@@ -1,4 +1,10 @@
+import { useNavigate } from "react-router-dom";
+import useAPI from "../store/useAPI";
+
 const SiteFooter = () => {
+  const { initializeUser } = useAPI();
+  const navigate = useNavigate();
+
   return (
     <footer className="footer">
       <div className="footer-grid">
@@ -25,7 +31,15 @@ const SiteFooter = () => {
               <a href="#simulator">AI Assistant</a>
             </li>
             <li>
-              <a href="feed.html">Live Feed</a>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  initializeUser(navigate);
+                }}
+              >
+                Safe Feed
+              </a>
             </li>
           </ul>
         </div>
@@ -34,7 +48,15 @@ const SiteFooter = () => {
           <h4 className="footer-title">Community</h4>
           <ul className="footer-links">
             <li>
-              <a href="feed.html">Join Us</a>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  initializeUser(navigate);
+                }}
+              >
+                Join Us
+              </a>
             </li>
             <li>
               <a href="#">Become a Supporter</a>
@@ -64,7 +86,7 @@ const SiteFooter = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2026 Pulse Wellness Inc. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Echo Mind AI. All rights reserved.</p>
         <div style={{ display: "flex", gap: "16px" }}>
           <a href="#">
             <i className="fa-brands fa-twitter"></i>
