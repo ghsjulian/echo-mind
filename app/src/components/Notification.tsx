@@ -67,7 +67,7 @@ const NotificationPopup = () => {
               className={`notif-item ${!item.read ? "unread" : ""}`}
             >
               <img
-                src="/icons/man.png"
+                src="/icons/user.png"
                 alt={item.sender_id}
                 className="notif-avatar"
               />
@@ -128,7 +128,9 @@ const NotificationPopup = () => {
               <path d="m2 2 20 20" />
               <path d="M8.668 3.01A6 6 0 0 1 18 8c0 2.687.77 4.653 1.707 6.05" />
             </svg>
-            <p>No notifications left</p>
+            <p style={{ color: "var(--text-secondary)" }}>
+              No notifications left
+            </p>
           </div>
         )}
       </div>

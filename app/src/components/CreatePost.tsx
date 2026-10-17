@@ -54,11 +54,7 @@ const CreatePost = () => {
   return (
     <div className="create-post-card">
       <div className="create-post-top">
-        <img
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
-          className="avatar"
-          alt="Avatar"
-        />
+        <img src="/icons/user.png" className="avatar" alt="Avatar" />
         {/* <input
           type="text"
           className="create-post-input"

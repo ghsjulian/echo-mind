@@ -1,7 +1,7 @@
 /* Right Sidebar Styling */
 .sidebar-right {
   position: sticky;
-  top: 80px;
+  top: 60px;
   height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
 .ai-widget-card {
   width: 100%;
   max-width: 600px;
-  height: 90vh;
+  height: 80vh;
   background: var(--bg-card);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -162,7 +162,7 @@
 
 .ai-input-area {
   position: absolute;
-  bottom: 10px;
+  bottom: 12px;
   left: 5px;
   right: 5px;
   display: flex;
@@ -313,7 +313,7 @@
 @media (max-width: 768px) {
   .sidebar-right {
     display: none;
-    height: 100vh;
+    height: 90vh;
     position: absolute;
     left: 5px;
     right: 5px;
@@ -321,7 +321,7 @@
     z-index: 10000;
   }
   .ai-widget-card {
-    height: 77vh;
+    height: 75vh;
   }
   .close-ai {
     display: block;
@@ -453,4 +453,3 @@
 .ai-pill-action:hover {
   transform: translateY(-2px);
 }
-

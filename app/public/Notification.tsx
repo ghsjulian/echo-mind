@@ -6,7 +6,7 @@ const initialNotifications = [
   {
     id: "1",
     user: "Eshika",
-    avatar: "/icons/man.png",
+    avatar: "/icons/user.png",
     text: "liked your post.",
     time: "2m ago",
     read: false,
@@ -14,7 +14,7 @@ const initialNotifications = [
   {
     id: "2",
     user: "Samiul Islam",
-    avatar: "/icons/man.png",
+    avatar: "/icons/user.png",
     text: "commented: 'Great work on this app!'",
     time: "1h ago",
     read: false,
@@ -22,7 +22,7 @@ const initialNotifications = [
   {
     id: "3",
     user: "System",
-    avatar: "/icons/man.png",
+    avatar: "/icons/user.png",
     text: "Your deployment was successful.",
     time: "1d ago",
     read: true,

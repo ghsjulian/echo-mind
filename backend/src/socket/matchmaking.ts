@@ -106,7 +106,7 @@ class SecretMatchmaking {
                     alias: aliasB,
                     feeling: matchedPartner.feeling || "Peaceful",
                     role: "Anonymous Peer Listener",
-                    avatar: "/icons/man.png",
+                    avatar: "/icons/user.png",
                 },
                 message: "You are connected! This chat is 100% anonymous & encrypted.",
             });
@@ -118,7 +118,7 @@ class SecretMatchmaking {
                     alias: aliasA,
                     feeling: feeling || "Peaceful",
                     role: "Anonymous Peer Listener",
-                    avatar: "/icons/man.png",
+                    avatar: "/icons/user.png",
                 },
                 message: "You are connected! This chat is 100% anonymous & encrypted.",
             });

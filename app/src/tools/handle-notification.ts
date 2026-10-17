@@ -39,8 +39,8 @@ export async function initNotifications() {
 function showLocalNotification(registration: any, data: any) {
   const options = {
     body: data.body,
-    icon: "/icons/man.png", // Path to your icon image
-    badge: "/icons/man.png", // Path to small badge icon
+    icon: "/icons/user.png", // Path to your icon image
+    badge: "/icons/user.png", // Path to small badge icon
     tag: "app-notification", // Prevents duplicate spamming
     data: {
       url: data.url || window.location.origin, // URL to open on click

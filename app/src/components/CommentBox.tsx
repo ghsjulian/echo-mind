@@ -54,7 +54,7 @@ const CommentBox = () => {
               return (
                 <div key={idx} className="comment-item">
                   <img
-                    src="/icons/man.png"
+                    src="/icons/user.png"
                     alt="user"
                     className="comment-avatar"
                   />
@@ -78,7 +78,7 @@ const CommentBox = () => {
             })}
 
           {/* <div className="comment-item">
-            <img src="/icons/man.png" alt="user" className="comment-avatar" />
+            <img src="/icons/user.png" alt="user" className="comment-avatar" />
             <div className="comment-content-wrapper">
               <div className="comment-bubble">
                 <span className="comment-username">user_id1232jfdfs</span>
@@ -94,7 +94,7 @@ const CommentBox = () => {
             </div>
           </div>
           <div className="comment-item">
-            <img src="/icons/man.png" alt="user" className="comment-avatar" />
+            <img src="/icons/user.png" alt="user" className="comment-avatar" />
             <div className="comment-content-wrapper">
               <div className="comment-bubble">
                 <span className="comment-username">user_id1232jfdfs</span>
@@ -110,7 +110,7 @@ const CommentBox = () => {
             </div>
           </div>
           <div className="comment-item">
-            <img src="/icons/man.png" alt="user" className="comment-avatar" />
+            <img src="/icons/user.png" alt="user" className="comment-avatar" />
             <div className="comment-content-wrapper">
               <div className="comment-bubble">
                 <span className="comment-username">user_id1232jfdfs</span>
@@ -126,7 +126,7 @@ const CommentBox = () => {
             </div>
           </div>
           <div className="comment-item">
-            <img src="/icons/man.png" alt="user" className="comment-avatar" />
+            <img src="/icons/user.png" alt="user" className="comment-avatar" />
             <div className="comment-content-wrapper">
               <div className="comment-bubble">
                 <span className="comment-username">user_id1232jfdfs</span>
@@ -142,7 +142,7 @@ const CommentBox = () => {
             </div>
           </div>
           <div className="comment-item">
-            <img src="/icons/man.png" alt="user" className="comment-avatar" />
+            <img src="/icons/user.png" alt="user" className="comment-avatar" />
             <div className="comment-content-wrapper">
               <div className="comment-bubble">
                 <span className="comment-username">user_id1232jfdfs</span>
@@ -162,7 +162,7 @@ const CommentBox = () => {
         {/* Comment Input Footer */}
         <div className="comment-input-container">
           <img
-            src="/icons/man.png"
+            src="/icons/user.png"
             alt="current user"
             className="comment-avatar"
           />

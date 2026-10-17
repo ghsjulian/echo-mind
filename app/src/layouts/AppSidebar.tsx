@@ -13,7 +13,7 @@ const AppSidebar = () => {
         <div className="profile-cover"></div>
         <div className="profile-info">
           <img
-            src="/icons/man.png"
+            src="/icons/user.png"
             className="profile-avatar-large"
             alt="Profile"
           />

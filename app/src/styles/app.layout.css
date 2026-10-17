@@ -112,6 +112,51 @@ body {
   background: var(--accent-color);
 }
 
+.circle-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.glowing-circle {
+  width: 10px;
+  height: 10px;
+  background-color: #22c55e; /* Vibrant Emerald Green */
+  border-radius: 50%;
+  box-shadow:
+    0 0 8px #22c55e,
+    0 0 16px #22c55e,
+    0 0 24px #22c55e;
+  position: relative;
+}
+
+/* Pulsing animation effect */
+.circle-container::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #22c55e;
+  opacity: 0.75;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+  50% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
 /* Header / Top Navigation */
 .navbar {
   position: fixed;
@@ -147,7 +192,7 @@ body {
 .brand-logo {
   width: 42px;
   height: 42px;
-  background: var(--accent-gradient);
+  /* background: var(--accent-gradient); */
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -872,8 +917,9 @@ body {
 
 /* Main Container */
 .comment-area {
-  background: #ffffff;
-  border-top: 1px solid #e4e6eb;
+  /* background: #ffffff; */
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -882,6 +928,7 @@ body {
   font-family: Helvetica, Arial, sans-serif;
   box-sizing: border-box;
   border-radius: 8px;
+  box-shadow: var(--shadow-md);
 }
 
 /* Header */
@@ -890,7 +937,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 10px;
-  border-bottom: 1px solid #f0f2f5;
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 12px;
 }
 
@@ -898,11 +945,11 @@ body {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: #050505;
+  color: var(--text-secondary);
 }
 
 .close-comment-btn {
-  background: #e4e6eb;
+  background: var(--bg-main);
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -916,7 +963,7 @@ body {
 }
 
 .close-comment-btn:hover {
-  background: #d8dadf;
+  background: var(--bg-input);
 }
 
 /* Comments List */
@@ -953,7 +1000,7 @@ body {
 
 /* Facebook Style Chat Bubble */
 .comment-bubble {
-  background: #f0f2f5;
+  background: var(--bg-main);
   padding: 8px 12px;
   border-radius: 18px;
   display: inline-block;
@@ -963,7 +1010,7 @@ body {
   display: block;
   font-weight: 600;
   font-size: 13px;
-  color: #050505;
+  color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
   margin-bottom: 2px;
@@ -976,7 +1023,7 @@ body {
 p.comment-txt {
   margin: 0;
   font-size: 14px;
-  color: #050505;
+  color: var(--text-muted);
   word-break: break-word;
   line-height: 1.38;
 }
@@ -1021,7 +1068,7 @@ p.comment-txt {
 
 .comment-input-wrapper {
   flex: 1;
-  background: #f0f2f5;
+  background: var(--bg-main);
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -1030,12 +1077,12 @@ p.comment-txt {
 
 .comment-input {
   flex: 1;
-  background: transparent;
+  background: var(--bg-main);
   border: none;
   outline: none;
   padding: 10px 0;
   font-size: 14px;
-  color: #050505;
+  color: var(--text-secondary);
 }
 input.comment-input:focus {
   border: none;
@@ -1539,8 +1586,12 @@ input.comment-input:focus {
     padding-bottom: 8rem;
     overflow-x: hidden;
   }
+  .nav-actions {
+    gap: 1rem;
+  }
   .nav-tabs,
-  .nav-search {
+  .nav-search,
+  .nav-brand {
     display: none;
   }
   .mobile-bottom-nav {
@@ -1563,6 +1614,6 @@ input.comment-input:focus {
     max-width: 95%;
   }
   .post-action-btn {
-    font-size: 16px;
+    font-size: 17px;
   }
 }

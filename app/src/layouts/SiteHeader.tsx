@@ -16,7 +16,7 @@ const SiteHeader = () => {
     <>
       <header className="navbar">
         <a href="#" className="brand-logo">
-          <img src="/icons/echo-mind.png" alt="Echo Mind" />
+          <img src="/icons/echo-mind-2.png" alt="Echo Mind" />
         </a>
 
         <ul className="nav-links">

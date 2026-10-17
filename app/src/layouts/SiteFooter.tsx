@@ -10,7 +10,7 @@ const SiteFooter = () => {
       <div className="footer-grid">
         <div className="footer-brand">
           <a href="#" className="brand-logo">
-            <img src="/icons/echo-mind.png" alt="Echo Mind" />
+            <img src="/icons/echo-mind-2.png" alt="Echo Mind" />
           </a>
           <p>
             A compassionate digital haven combining artificial intelligence with
@@ -86,7 +86,9 @@ const SiteFooter = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Echo Mind AI. All rights reserved.</p>
+        <p>
+          &copy; {new Date().getFullYear()} Echo Mind AI. All rights reserved.
+        </p>
         <div style={{ display: "flex", gap: "16px" }}>
           <a href="#">
             <i className="fa-brands fa-twitter"></i>

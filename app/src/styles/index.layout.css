@@ -297,7 +297,7 @@ a {
   border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
-  transform: perspective(1000px) rotateY(-4deg) rotateX(2deg);
+  transform: perspective(1000px) rotateY(-20deg) rotateX(2deg);
   transition: var(--transition-smooth);
 }
 
@@ -687,12 +687,12 @@ a {
   text-align: justify;
 }
 .footer-brand a {
-  width: 100%;
+  width: 50px;
   padding: 0;
   display: block;
 }
 .footer-brand a img {
-  width: 200px;
+  width: 50px;
 }
 .footer-brand p {
   font-size: 14px;

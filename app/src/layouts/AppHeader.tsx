@@ -3,14 +3,15 @@ import useAppStore from "../store/useAppStore";
 
 const AppHeader = () => {
   const { toggleTheme, isDark } = useAPI();
-  const { openNotification, notifications, openAI, onlineCount } = useAppStore();
+  const { openNotification, notifications, openAI, onlineCount } =
+    useAppStore();
 
   return (
     <header className="navbar">
       <div className="left-bar">
         <a href="#" className="nav-brand">
           <div className="brand-logo">
-            <img src="/icons/favicon.png" alt="Echo Mind" />
+            <img src="/icons/echo-mind-2.png" alt="Echo Mind" />
           </div>
         </a>
 
@@ -27,24 +28,18 @@ const AppHeader = () => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "6px",
+            gap: "8px",
             fontSize: "12px",
             background: "var(--bg-input)",
-            padding: "6px 12px",
+            padding: "10px 12px",
             borderRadius: "16px",
             color: "var(--text-secondary)",
-            fontWeight: "600",
+            fontWeight: "900",
           }}
         >
-          <span
-            style={{
-              width: "8px",
-              height: "8px",
-              borderRadius: "50%",
-              background: "#10b981",
-              boxShadow: "0 0 6px #10b981",
-            }}
-          ></span>
+          <div className="circle-container">
+            <div className="glowing-circle"></div>
+          </div>
           <span>{onlineCount} Online</span>
         </div>
 
@@ -61,13 +56,9 @@ const AppHeader = () => {
           )}
         </button>
 
-        <button
-          onClick={openAI}
-          className="icon-btn"
-          title="AI Support & Secret Chat"
-          style={{ color: "var(--accent-color)" }}
-        >
-          <i className="fa-solid fa-heart-pulse"></i>
+        <button className="icon-btn" title="Messages">
+          <i className="fa-solid fa-paper-plane"></i>
+          {/* <span className="badge-dot"></span> */}
         </button>
 
         <button
@@ -83,7 +74,7 @@ const AppHeader = () => {
 
         <div className="nav-user">
           <div className="avatar-wrap">
-            <img src="/icons/man.png" alt="User Avatar" className="avatar" />
+            <img src="/icons/user.png" alt="User Avatar" className="avatar" />
             <span className="online-ring"></span>
           </div>
         </div>

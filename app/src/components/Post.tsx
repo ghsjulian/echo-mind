@@ -11,7 +11,7 @@ const PostCard = ({ post }: { post: Post }) => {
       <div className="post-header">
         <div className="post-author-info">
           <div className="avatar-wrap">
-            <img src="/icons/man.png" className="avatar" alt="Author" />
+            <img src="/icons/user.png" className="avatar" alt="Author" />
             <span className="online-ring"></span>
           </div>
           <div>
@@ -41,7 +41,12 @@ const PostCard = ({ post }: { post: Post }) => {
             <video
               src={url + post.post_media}
               controls
-              style={{ width: "100%", maxHeight: "420px", display: "block", borderRadius: "var(--radius-md)" }}
+              style={{
+                width: "100%",
+                maxHeight: "420px",
+                display: "block",
+                borderRadius: "var(--radius-md)",
+              }}
             />
           ) : (
             <img src={url + post.post_media} alt="Post attachment" />
@@ -57,11 +62,14 @@ const PostCard = ({ post }: { post: Post }) => {
           <span className="reaction-badge reaction-heart">
             <i className="fa-solid fa-heart"></i>
           </span>
-          <span style={{ marginLeft: "8px" }}>{(post.likes || []).length} Likes</span>
+          <span style={{ marginLeft: "8px" }}>
+            {(post.likes || []).length} Likes
+          </span>
         </div>
         <div>
           <span>
-            {(post.comments || []).length} Comments • {(post.shares || []).length} Shares
+            {(post.comments || []).length} Comments •{" "}
+            {(post.shares || []).length} Shares
           </span>
         </div>
       </div>
@@ -100,7 +108,7 @@ const PostCard = ({ post }: { post: Post }) => {
       <div className="comments-section">
         <div className="comment-item">
           <img
-            src="/icons/man.png"
+            src="/icons/user.png"
             className="avatar"
             style={{ width: "30px", height: "30px" }}
             alt="User"
@@ -113,7 +121,7 @@ const PostCard = ({ post }: { post: Post }) => {
         </div>
         <div className="comment-input-box">
           <img
-            src="/icons/man.png"
+            src="/icons/user.png"
             className="avatar"
             style={{ width: "30px", height: "30px" }}
             alt="User"

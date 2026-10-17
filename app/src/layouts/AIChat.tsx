@@ -83,7 +83,14 @@ const AIChat = () => {
             >
               <i className="fa-solid fa-user-secret"></i> Secret Match
               {secretStatus === "matched" && (
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10b981" }}></span>
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "50%",
+                    background: "#10b981",
+                  }}
+                ></span>
               )}
             </button>
           </div>
@@ -91,11 +98,16 @@ const AIChat = () => {
           {/* ================= TAB 1: AI EMOTIONAL CHAT ================= */}
           {activeChatTab === "ai" && (
             <>
-              <div className="ai-chat-box" style={{ flex: 1, maxHeight: "calc(100% - 110px)" }}>
+              <div
+                className="ai-chat-box"
+                style={{ flex: 1, maxHeight: "calc(100% - 110px)" }}
+              >
                 {aiMessages.map((msg) => (
                   <div key={msg.id} className={`ai-msg ${msg.sender}`}>
                     <div className="ai-avatar">
-                      <i className={`fa-solid ${msg.sender === "bot" ? "fa-robot" : "fa-user"}`}></i>
+                      <i
+                        className={`fa-solid ${msg.sender === "bot" ? "fa-robot" : "fa-user"}`}
+                      ></i>
                     </div>
                     <div className="ai-bubble">
                       <div>{msg.text}</div>
@@ -109,9 +121,26 @@ const AIChat = () => {
                     <div className="ai-avatar">
                       <i className="fa-solid fa-robot"></i>
                     </div>
-                    <div className="ai-bubble" style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-                      <span className="spinner" style={{ width: "12px", height: "12px" }}></span>
-                      <span style={{ fontSize: "11px", color: "var(--text-secondary)" }}>Echo Mind is reflecting...</span>
+                    <div
+                      className="ai-bubble"
+                      style={{
+                        display: "flex",
+                        gap: "4px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span
+                        className="spinner"
+                        style={{ width: "12px", height: "12px" }}
+                      ></span>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          color: "var(--text-secondary)",
+                        }}
+                      >
+                        Echo Mind is reflecting...
+                      </span>
                     </div>
                   </div>
                 )}
@@ -121,10 +150,13 @@ const AIChat = () => {
               {/* Quick Secret Match Suggestion Pill */}
               <div style={{ textAlign: "center", margin: "2px 0 50px 0" }}>
                 <button
-                  onClick={() => startSecretMatch(user?.user_feeling || "Normal")}
+                  onClick={() =>
+                    startSecretMatch(user?.user_feeling || "Normal")
+                  }
                   className="ai-pill-action"
                 >
-                  <i className="fa-solid fa-user-secret"></i> Need a human listener? Find Secret Match
+                  <i className="fa-solid fa-user-secret"></i> Need a human
+                  listener? Find Secret Match
                 </button>
               </div>
 
@@ -137,7 +169,11 @@ const AIChat = () => {
                   onKeyDown={handleKeyDown}
                   placeholder="Share how you're feeling..."
                 />
-                <button onClick={handleSend} className="ai-send-btn" title="Send">
+                <button
+                  onClick={handleSend}
+                  className="ai-send-btn"
+                  title="Send"
+                >
                   <i className="fa-solid fa-paper-plane"></i>
                 </button>
               </div>
@@ -151,19 +187,42 @@ const AIChat = () => {
               {secretStatus === "idle" && (
                 <div className="secret-match-card">
                   <div style={{ fontSize: "32px" }}>🤫</div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "700" }}>Secret Peer Matching</h4>
-                  <p style={{ fontSize: "12px", color: "var(--text-secondary)", lineHeight: 1.4 }}>
-                    Looking for someone to talk to privately? Echo Mind connects you 1-on-1 with an available anonymous peer listener.
+                  <h4 style={{ fontSize: "15px", fontWeight: "700" }}>
+                    Secret Peer Matching
+                  </h4>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    Looking for someone to talk to privately? Echo Mind connects
+                    you 1-on-1 with an available anonymous peer listener.
                   </p>
-                  <div style={{ fontSize: "12px", color: "#10b981", fontWeight: "600" }}>
-                    ● {onlineCount} {onlineCount === 1 ? "user" : "users"} active in the safe space
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "#10b981",
+                      fontWeight: "600",
+                    }}
+                  >
+                    ● {onlineCount} {onlineCount === 1 ? "user" : "users"}{" "}
+                    active in the safe space
                   </div>
                   <button
-                    onClick={() => startSecretMatch(user?.user_feeling || "Normal")}
+                    onClick={() =>
+                      startSecretMatch(user?.user_feeling || "Normal")
+                    }
                     className="btn btn-primary"
-                    style={{ padding: "10px", fontSize: "13px", marginTop: "8px" }}
+                    style={{
+                      padding: "10px",
+                      fontSize: "13px",
+                      marginTop: "8px",
+                    }}
                   >
-                    <i className="fa-solid fa-magnifying-glass"></i> Find Anonymous Match
+                    <i className="fa-solid fa-magnifying-glass"></i> Find
+                    Anonymous Match
                   </button>
                 </div>
               )}
@@ -171,10 +230,18 @@ const AIChat = () => {
               {/* STATUS: SEARCHING */}
               {secretStatus === "searching" && (
                 <div className="secret-match-card">
-                  <div className="spinner" style={{ width: "28px", height: "28px", margin: "0 auto" }}></div>
-                  <h4 style={{ fontSize: "14px", fontWeight: "700" }}>Finding Your Match...</h4>
-                  <p style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-                    Pairing you with a caring peer listener based on emotional alignment.
+                  <div
+                    className="spinner"
+                    style={{ width: "28px", height: "28px", margin: "0 auto" }}
+                  ></div>
+                  <h4 style={{ fontSize: "14px", fontWeight: "700" }}>
+                    Finding Your Match...
+                  </h4>
+                  <p
+                    style={{ fontSize: "12px", color: "var(--text-secondary)" }}
+                  >
+                    Pairing you with a caring peer listener based on emotional
+                    alignment.
                   </p>
                   <button
                     onClick={cancelSecretMatch}
@@ -191,14 +258,26 @@ const AIChat = () => {
                 <>
                   {/* Header Bar with Peer Info */}
                   <div className="secret-active-header">
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                    >
                       <img
-                        src="/icons/man.png"
+                        src="/icons/user.png"
                         alt="Peer"
-                        style={{ width: "32px", height: "32px", borderRadius: "50%" }}
+                        style={{
+                          width: "32px",
+                          height: "32px",
+                          borderRadius: "50%",
+                        }}
                       />
                       <div>
-                        <div style={{ fontSize: "13px", fontWeight: "700" }}>{secretPeer?.alias}</div>
+                        <div style={{ fontSize: "13px", fontWeight: "700" }}>
+                          {secretPeer?.alias}
+                        </div>
                         <div style={{ fontSize: "10px", color: "#10b981" }}>
                           ● Feeling {secretPeer?.feeling || "Peaceful"}
                         </div>
@@ -214,7 +293,10 @@ const AIChat = () => {
                   </div>
 
                   {/* Messages Box */}
-                  <div className="ai-chat-box" style={{ flex: 1, maxHeight: "calc(100% - 120px)" }}>
+                  <div
+                    className="ai-chat-box"
+                    style={{ flex: 1, maxHeight: "calc(100% - 120px)" }}
+                  >
                     {secretMessages.map((msg) => {
                       if (msg.senderID === "system") {
                         return (
@@ -224,12 +306,22 @@ const AIChat = () => {
                         );
                       }
                       return (
-                        <div key={msg.id} className={`ai-msg ${msg.isMe ? "user" : "bot"}`}>
+                        <div
+                          key={msg.id}
+                          className={`ai-msg ${msg.isMe ? "user" : "bot"}`}
+                        >
                           <div className="ai-avatar">
                             <i className="fa-solid fa-user"></i>
                           </div>
                           <div className="ai-bubble">
-                            <div style={{ fontSize: "10px", fontWeight: "700", opacity: 0.8, marginBottom: "2px" }}>
+                            <div
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: "700",
+                                opacity: 0.8,
+                                marginBottom: "2px",
+                              }}
+                            >
                               {msg.senderAlias}
                             </div>
                             <div>{msg.text}</div>
@@ -238,7 +330,11 @@ const AIChat = () => {
                         </div>
                       );
                     })}
-                    {secretPeerTyping && <div className="peer-typing-indicator">Peer is typing...</div>}
+                    {secretPeerTyping && (
+                      <div className="peer-typing-indicator">
+                        Peer is typing...
+                      </div>
+                    )}
                     <div ref={chatEndRef} />
                   </div>
 
@@ -251,7 +347,11 @@ const AIChat = () => {
                       onKeyDown={handleKeyDown}
                       placeholder="Type a secret message..."
                     />
-                    <button onClick={handleSend} className="ai-send-btn" title="Send">
+                    <button
+                      onClick={handleSend}
+                      className="ai-send-btn"
+                      title="Send"
+                    >
                       <i className="fa-solid fa-paper-plane"></i>
                     </button>
                   </div>
@@ -262,13 +362,26 @@ const AIChat = () => {
               {secretStatus === "ended" && (
                 <div className="secret-match-card">
                   <div style={{ fontSize: "28px" }}>💙</div>
-                  <h4 style={{ fontSize: "14px", fontWeight: "700" }}>Secret Chat Concluded</h4>
-                  <p style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-                    Your secret session has finished. You can connect with a new peer or converse with Echo Mind.
+                  <h4 style={{ fontSize: "14px", fontWeight: "700" }}>
+                    Secret Chat Concluded
+                  </h4>
+                  <p
+                    style={{ fontSize: "12px", color: "var(--text-secondary)" }}
+                  >
+                    Your secret session has finished. You can connect with a new
+                    peer or converse with Echo Mind.
                   </p>
-                  <div style={{ display: "flex", gap: "8px", justifyContent: "center" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                      justifyContent: "center",
+                    }}
+                  >
                     <button
-                      onClick={() => startSecretMatch(user?.user_feeling || "Normal")}
+                      onClick={() =>
+                        startSecretMatch(user?.user_feeling || "Normal")
+                      }
                       className="btn btn-primary"
                       style={{ padding: "8px 14px", fontSize: "12px" }}
                     >

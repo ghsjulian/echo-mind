@@ -5,7 +5,7 @@ import { getSocketById } from "../socket/index.js"
 const getUserProfile = async (userID: string): Promise<void> => {
     try {
         const [totalPost, user] = await Promise.all([
-            postModel.countDocuments(),
+            postModel.find({ poster_id: userID }).countDocuments(),
             UserModel.findOne({ user_id: userID })
         ]);
         const socket = getSocketById(userID)
