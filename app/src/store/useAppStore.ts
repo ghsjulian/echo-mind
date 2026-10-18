@@ -145,45 +145,69 @@ const useAppStore = create<AppState>((set, get) => ({
 
     // AI Chat
     sendAIMessage: (text: string): void => {
-        if (!text.trim()) return;
+        const trimmed = text.trim();
+        if (!trimmed) return;
 
         const userMsg: AIMessage = {
-            id: `usr_${Date.now()}`,
+            id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
             sender: "user",
-            text: text.trim(),
+            text: trimmed,
             time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         };
 
-        const currentMessages = [...get().aiMessages, userMsg];
-        set({ aiMessages: currentMessages, isAITyping: true });
+        // Append user message safely, avoiding any exact text/time duplicates at the end
+        set((state) => {
+            const lastMsg = state.aiMessages[state.aiMessages.length - 1];
+            if (lastMsg && lastMsg.sender === "user" && lastMsg.text === trimmed) {
+                return { isAITyping: true };
+            }
+            return {
+                aiMessages: [...state.aiMessages, userMsg],
+                isAITyping: true,
+            };
+        });
 
-        // Build history for backend AI
-        const history = currentMessages.map((m) => ({
+        const history = get().aiMessages.map((m) => ({
             sender: m.sender,
             text: m.text,
         }));
 
-        socket.emit("ai:message", { message: text.trim(), history }, (response: any) => {
+        socket.emit("ai:message", { message: trimmed, history }, (response: any) => {
             if (response?.text) {
                 const botMsg: AIMessage = {
-                    id: `bot_${Date.now()}`,
+                    id: `bot_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
                     sender: "bot",
                     text: response.text,
                     time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
                 };
-                set((state) => ({
-                    aiMessages: [...state.aiMessages, botMsg],
-                    isAITyping: false,
-                }));
+
+                set((state) => {
+                    // Prevent identical bot message content duplication
+                    const alreadyExists = state.aiMessages.some(
+                        (m) => m.text === botMsg.text && m.sender === "bot" && Date.now() - parseInt(m.id.split('_')[1] || '0') < 5000
+                    );
+                    if (alreadyExists) return { isAITyping: false };
+
+                    return {
+                        aiMessages: [...state.aiMessages, botMsg],
+                        isAITyping: false,
+                    };
+                });
+            } else {
+                set({ isAITyping: false });
             }
         });
     },
 
     addAIMessage: (msg: AIMessage): void => {
-        set((state) => ({
-            aiMessages: [...state.aiMessages, msg],
-            isAITyping: false,
-        }));
+        set((state) => {
+            const exists = state.aiMessages.some((m) => m.id === msg.id || (m.text === msg.text && m.sender === msg.sender));
+            if (exists) return state;
+            return {
+                aiMessages: [...state.aiMessages, msg],
+                isAITyping: false,
+            };
+        });
     },
 
     setAITyping: (typing: boolean): void => {
@@ -209,8 +233,9 @@ const useAppStore = create<AppState>((set, get) => ({
 
     sendSecretMessage: (text: string): void => {
         const { secretRoomID } = get();
-        if (!secretRoomID || !text.trim()) return;
-        socket.emit("secret:send-message", { roomID: secretRoomID, text: text.trim() });
+        const trimmed = text.trim();
+        if (!secretRoomID || !trimmed) return;
+        socket.emit("secret:send-message", { roomID: secretRoomID, text: trimmed });
     },
 
     leaveSecretChat: (): void => {
@@ -247,9 +272,15 @@ const useAppStore = create<AppState>((set, get) => ({
     },
 
     addSecretMessage: (msg: SecretMessage): void => {
-        set((state) => ({
-            secretMessages: [...state.secretMessages, msg],
-        }));
+        set((state) => {
+            const exists = state.secretMessages.some(
+                (m) => m.id === msg.id || (m.text === msg.text && m.senderID === msg.senderID)
+            );
+            if (exists) return state;
+            return {
+                secretMessages: [...state.secretMessages, msg],
+            };
+        });
     },
 
     setSecretPeerTyping: (isTyping: boolean): void => {

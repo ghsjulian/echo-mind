@@ -4,7 +4,7 @@ import config from "../config/app.config.js";
 const gemini = config.GEMINI_API_KEY ? new GoogleGenAI({ apiKey: config.GEMINI_API_KEY }) : null;
 
 // Valid, high-performance Gemini model
-const EMOTIONAL_AI_MODEL = "gemini-2.5-flash";
+const EMOTIONAL_AI_MODEL = "gemini-3.5-flash-lite" //"gemini-2.5-flash";
 
 const SYSTEM_PROMPT = `You are Echo Mind, an empathetic, caring, and emotionally intelligent AI companion.
 Your role:
@@ -27,7 +27,6 @@ export async function generateEmotionalReply(
     history: { sender: "user" | "bot"; text: string }[] = []
 ): Promise<string> {
     if (!gemini || !config.GEMINI_API_KEY) {
-        // Return compassionate fallback if API key is not configured
         const randomFallback = FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)];
         return randomFallback;
     }
@@ -56,6 +55,7 @@ export async function generateEmotionalReply(
         if (!reply) {
             return FALLBACK_RESPONSES[0];
         }
+        console.log("AI Response : ", reply)
         return reply;
     } catch (error) {
         console.error("Gemini AI API error, using compassionate fallback:", error);

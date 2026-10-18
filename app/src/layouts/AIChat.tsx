@@ -33,18 +33,20 @@ const AIChat = () => {
   }, [aiMessages, secretMessages, isAITyping, secretStatus]);
 
   const handleSend = () => {
-    if (!inputText.trim()) return;
+    const trimmed = inputText.trim();
+    if (!trimmed) return;
 
     if (activeChatTab === "ai") {
-      sendAIMessage(inputText);
+      sendAIMessage(trimmed);
     } else if (activeChatTab === "secret" && secretStatus === "matched") {
-      sendSecretMessage(inputText);
+      sendSecretMessage(trimmed);
     }
     setInputText("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       handleSend();
     }
   };
@@ -59,7 +61,7 @@ const AIChat = () => {
               <i className="fa-solid fa-heart-pulse"></i>
             </div>
             <div className="ai-header-text">
-              <h3>Echo Mind Care</h3>
+              <h3>Echo Mind AI</h3>
               <span>24/7 AI & Anonymous Peer Support</span>
             </div>
           </div>
@@ -89,6 +91,8 @@ const AIChat = () => {
                     height: "6px",
                     borderRadius: "50%",
                     background: "#10b981",
+                    display: "inline-block",
+                    marginLeft: "4px",
                   }}
                 ></span>
               )}
