@@ -17,7 +17,7 @@ const MainApp = () => {
   const navigate = useNavigate();
   const { verifyUser, isVerifying, theme } = useAPI();
   const { isOpenComment } = usePost();
-  const { isNotiOpen } = useAppStore();
+  const { isNotiOpen, isAI } = useAppStore();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -33,7 +33,7 @@ const MainApp = () => {
     <>
       <SocketListener />
       {isOpenComment && <CommentBox />}
-      <AppHeader />
+      {!isAI && <AppHeader />}
       {isNotiOpen && <NotificationPopup />}
       <div className="app-container">
         <AppSidebar />
@@ -43,7 +43,7 @@ const MainApp = () => {
         </main>
         <AIChat />
       </div>
-      <AppMobileBar />
+      {!isAI && <AppMobileBar />}
     </>
   );
 };

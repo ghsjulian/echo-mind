@@ -4,7 +4,7 @@ import usePost from "../store/usePost";
 
 const AppSidebar = () => {
   const { user } = useAPI();
-  const { isProfile, openAI } = useAppStore();
+  const { isProfile, openAI, isAI } = useAppStore();
   const { totalPost, profile } = usePost();
 
   return (
@@ -45,7 +45,14 @@ const AppSidebar = () => {
       <div className="widget-card">
         <ul className="sidebar-menu">
           <li className="menu-item active">
-            <a href="#">
+            <a
+              onClick={(e) => {
+                e.preventDefault();
+                if (!isAI) return;
+                openAI();
+              }}
+              href="#"
+            >
               <i className="fa-solid fa-newspaper"></i> News Feed
             </a>
           </li>

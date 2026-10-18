@@ -48,7 +48,7 @@ const CommentBox = () => {
 
         {/* Comments List */}
         <div ref={commentRef} className="comments-list">
-          {comments?.length == 0 && <p>No comments yet !</p>}
+          {comments?.length == 0 && <strong>No comments yet !</strong>}
           {comments?.length > 0 &&
             comments?.map((comment, idx) => {
               return (

@@ -310,18 +310,40 @@
 .close-ai {
   display: none;
 }
-@media (max-width: 768px) {
+
+@media (max-width: 1100px) {
   .sidebar-right {
     display: none;
-    height: 90vh;
+  }
+  .sidebar-right {
+    width: 65%;
+    display: none;
+    height: 86vh;
     position: absolute;
-    left: 5px;
-    right: 5px;
-    top: 0;
+    left: 34%;
+    top: 1.2rem;
     z-index: 10000;
   }
   .ai-widget-card {
-    height: 75vh;
+    height: 86vh;
+    padding: 0.5rem;
+    padding-bottom: 0.3rem;
+  }
+}
+@media (max-width: 768px) {
+  .sidebar-right {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -13%;
+    z-index: 100000;
+  }
+  .ai-widget-card {
+    height: 100vh;
+    max-height: 100vh;
   }
   .close-ai {
     display: block;
