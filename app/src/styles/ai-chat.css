@@ -9,6 +9,13 @@
   overflow-y: auto;
   padding-right: 4px;
   animation: fadeIn 0.8s ease-in-out;
+  scroll-behavior: smooth;
+  scrollbar-width: 0;
+}
+.right-sidebar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 .sidebar-right.active {
   display: flex;
@@ -28,7 +35,11 @@
   flex-direction: column;
   transition: box-shadow var(--transition-fast);
 }
-
+.ai-widget-card::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
 .ai-widget-header {
   background: var(--ai-glow-gradient);
   padding: 16px;
@@ -162,15 +173,15 @@
 
 .ai-input-area {
   position: absolute;
-  bottom: 12px;
+  bottom: 10px;
   left: 5px;
   right: 5px;
   display: flex;
   gap: 8px;
   align-items: center;
   background: var(--bg-main);
-  border-radius: 20px;
-  padding: 4px 6px 4px 12px;
+  border-radius: 10px;
+  padding: 0.5rem 0.7rem;
   border: 1px solid var(--border-color);
 }
 
@@ -341,9 +352,16 @@
     top: -13%;
     z-index: 100000;
   }
+  .ai-widget-header {
+    display: none;
+  }
+  .chat-mode-tabs {
+    padding: 0 0.3rem;
+  }
   .ai-widget-card {
     height: 100vh;
     max-height: 100vh;
+    padding: 0.3rem 0;
   }
   .close-ai {
     display: block;

@@ -56,7 +56,7 @@ const AppSidebar = () => {
               <i className="fa-solid fa-newspaper"></i> News Feed
             </a>
           </li>
-          <li className="menu-item">
+          <li className="menu-item desk">
             <a
               href="#"
               onClick={(e) => {

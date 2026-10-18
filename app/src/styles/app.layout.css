@@ -580,6 +580,9 @@ body {
   width: 24px;
   text-align: center;
 }
+.menu-item.desk {
+  display: none;
+}
 
 /* Trending Tags list */
 .hashtag-list {
@@ -1567,6 +1570,9 @@ input.comment-input:focus {
   .right-sidebar {
     display: none;
   }
+  .menu-item.desk {
+    display: block;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1615,5 +1621,8 @@ input.comment-input:focus {
   }
   .post-action-btn {
     font-size: 17px;
+  }
+  .menu-item.desk {
+    display: block;
   }
 }

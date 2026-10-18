@@ -97,6 +97,7 @@ const AIChat = () => {
                 ></span>
               )}
             </button>
+            <button className="close">x</button>
           </div>
 
           {/* ================= TAB 1: AI EMOTIONAL CHAT ================= */}
