@@ -3,8 +3,7 @@ import useAppStore from "../store/useAppStore";
 
 const AppHeader = () => {
   const { toggleTheme, isDark } = useAPI();
-  const { openNotification, notifications, openAI, onlineCount } =
-    useAppStore();
+  const { openNotification, notifications, onlineCount } = useAppStore();
 
   return (
     <header className="navbar">
