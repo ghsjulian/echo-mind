@@ -3,7 +3,8 @@ import useAppStore from "../store/useAppStore";
 
 const AppHeader = () => {
   const { toggleTheme, isDark } = useAPI();
-  const { openNotification, notifications, onlineCount } = useAppStore();
+  const { openNotification, notifications, onlineCount, openSecretChat } =
+    useAppStore();
 
   return (
     <header className="navbar">
@@ -55,7 +56,11 @@ const AppHeader = () => {
           )}
         </button>
 
-        <button className="icon-btn" title="Messages">
+        <button
+          onClick={openSecretChat}
+          className="icon-btn secret-chat"
+          title="Messages"
+        >
           <i className="fa-solid fa-paper-plane"></i>
           {/* <span className="badge-dot"></span> */}
         </button>

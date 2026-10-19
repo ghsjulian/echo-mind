@@ -20,7 +20,9 @@
 .sidebar-right.active {
   display: flex;
 }
-
+.active-chat-box {
+  padding-bottom: 2rem;
+}
 /* Emotional AI Card Widget */
 .ai-widget-card {
   width: 100%;
@@ -115,7 +117,7 @@
 
 /* AI Conversation Area */
 .ai-chat-box {
-  max-height: 240px;
+  max-height: 250px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -341,40 +343,6 @@
     padding-bottom: 0.3rem;
   }
 }
-@media (max-width: 768px) {
-  .sidebar-right {
-    display: none;
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -13%;
-    z-index: 100000;
-  }
-  .ai-widget-header {
-    display: none;
-  }
-  .chat-mode-tabs {
-    padding: 0 0.3rem;
-  }
-  .ai-widget-card {
-    height: 100vh;
-    max-height: 100vh;
-    padding: 0.3rem 0;
-  }
-  .close-ai {
-    display: block;
-    outline: none;
-    background: transparent;
-    border: none;
-    font-weight: 800;
-    color: #fdfafa;
-    padding: 5px;
-    cursor: pointer;
-    font-size: 22px;
-  }
-}
 
 /* Chat Mode Switcher Tabs */
 .chat-mode-tabs {
@@ -420,6 +388,9 @@
   flex-direction: column;
   gap: 12px;
   margin: 10px 0;
+}
+.chat-mode-tabs .notif-close-btn {
+  display: none;
 }
 
 .secret-active-header {
@@ -492,4 +463,42 @@
 
 .ai-pill-action:hover {
   transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .sidebar-right {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -13%;
+    z-index: 100000;
+  }
+  .ai-widget-header {
+    display: none;
+  }
+  .chat-mode-tabs {
+    padding: 0 0.3rem;
+  }
+  .ai-widget-card {
+    height: 100vh;
+    max-height: 100vh;
+    padding: 0.3rem 0;
+  }
+  .close-ai {
+    display: block;
+    outline: none;
+    background: transparent;
+    border: none;
+    font-weight: 800;
+    color: #fdfafa;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 22px;
+  }
+  .chat-mode-tabs .notif-close-btn {
+    display: block;
+  }
 }

@@ -97,7 +97,27 @@ const AIChat = () => {
                 ></span>
               )}
             </button>
-            <button className="close">x</button>
+            <button
+              onClick={openAI}
+              title="Close Chat"
+              className="notif-close-btn"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="red"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-x preview-icon"
+              >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </button>
           </div>
 
           {/* ================= TAB 1: AI EMOTIONAL CHAT ================= */}
@@ -105,7 +125,10 @@ const AIChat = () => {
             <>
               <div
                 className="ai-chat-box"
-                style={{ flex: 1, maxHeight: "calc(100% - 110px)" }}
+                style={{
+                  flex: 1,
+                  maxHeight: "calc(100% - 110px)",
+                }}
               >
                 {aiMessages.map((msg) => (
                   <div key={msg.id} className={`ai-msg ${msg.sender}`}>
@@ -265,6 +288,7 @@ const AIChat = () => {
                   <div className="secret-active-header">
                     <div
                       style={{
+                        padding: 0,
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
@@ -300,7 +324,7 @@ const AIChat = () => {
                   {/* Messages Box */}
                   <div
                     className="ai-chat-box"
-                    style={{ flex: 1, maxHeight: "calc(100% - 120px)" }}
+                    style={{ flex: 1, maxHeight: "calc(100% - 170px)" }}
                   >
                     {secretMessages.map((msg) => {
                       if (msg.senderID === "system") {
@@ -322,14 +346,14 @@ const AIChat = () => {
                             <div
                               style={{
                                 fontSize: "10px",
-                                fontWeight: "700",
+                                fontWeight: "900",
                                 opacity: 0.8,
                                 marginBottom: "2px",
                               }}
                             >
                               {msg.senderAlias}
                             </div>
-                            <div>{msg.text}</div>
+                            <div style={{ fontWeight: "900" }}>{msg.text}</div>
                             <span className="ai-timestamp">{msg.time}</span>
                           </div>
                         </div>

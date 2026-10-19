@@ -52,6 +52,7 @@ interface AppState {
     secretRoomID: string | null;
     secretMessages: SecretMessage[];
     secretPeerTyping: boolean;
+    isSecretChat: boolean
 
     // Actions
     openAI: () => void;
@@ -80,6 +81,7 @@ interface AppState {
     setSecretStatus: (status: "idle" | "searching" | "matched" | "ended") => void;
     addSecretMessage: (msg: SecretMessage) => void;
     setSecretPeerTyping: (isTyping: boolean) => void;
+    openSecretChat: () => void
 }
 
 const useAppStore = create<AppState>((set, get) => ({
@@ -88,6 +90,7 @@ const useAppStore = create<AppState>((set, get) => ({
     isNotiOpen: false,
     notifications: [],
     onlineCount: 1,
+    isSecretChat: false,
 
     // AI Chat
     activeChatTab: "ai",
@@ -286,6 +289,10 @@ const useAppStore = create<AppState>((set, get) => ({
     setSecretPeerTyping: (isTyping: boolean): void => {
         set({ secretPeerTyping: isTyping });
     },
+    openSecretChat: () => {
+        get().openAI()
+        get().setActiveChatTab("secret")
+    }
 }));
 
 export default useAppStore;
