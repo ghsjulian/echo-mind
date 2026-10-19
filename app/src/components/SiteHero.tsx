@@ -32,7 +32,7 @@ const SiteHero = () => {
           >
             <i className="fa-solid fa-heart-pulse"></i> Get Emotional Support
           </NavLink>
-          <NavLink
+          {/* <NavLink
             onClick={(e) => {
               (e.preventDefault(), initializeUser(navigate));
             }}
@@ -41,7 +41,7 @@ const SiteHero = () => {
             style={{ padding: "14px 30px", fontSize: "15px" }}
           >
             <i className="fa-solid fa-users"></i> Join Our Community
-          </NavLink>
+          </NavLink> */}
         </div>
       </div>
 

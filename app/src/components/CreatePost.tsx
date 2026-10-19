@@ -62,7 +62,7 @@ const CreatePost = () => {
         /> */}
         <textarea
           className="create-post-input"
-          placeholder="What's on your mind, Alex?"
+          placeholder="Share a light to encourage someone today"
           onChange={(e) => setPost(e.target.value)}
           value={postContent}
         ></textarea>
