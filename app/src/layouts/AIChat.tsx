@@ -75,13 +75,17 @@ const AIChat = () => {
           <div className="chat-mode-tabs">
             <button
               onClick={() => setActiveChatTab("ai")}
-              className={`chat-tab-btn ${activeChatTab === "ai" ? "active" : ""}`}
+              className={`chat-tab-btn ${
+                activeChatTab === "ai" ? "active" : ""
+              }`}
             >
               <i className="fa-solid fa-robot"></i> AI Companion
             </button>
             <button
               onClick={() => setActiveChatTab("secret")}
-              className={`chat-tab-btn ${activeChatTab === "secret" ? "active" : ""}`}
+              className={`chat-tab-btn ${
+                activeChatTab === "secret" ? "active" : ""
+              }`}
             >
               <i className="fa-solid fa-user-secret"></i> Secret Match
               {secretStatus === "matched" && (
@@ -134,7 +138,9 @@ const AIChat = () => {
                   <div key={msg.id} className={`ai-msg ${msg.sender}`}>
                     <div className="ai-avatar">
                       <i
-                        className={`fa-solid ${msg.sender === "bot" ? "fa-robot" : "fa-user"}`}
+                        className={`fa-solid ${
+                          msg.sender === "bot" ? "fa-robot" : "fa-user"
+                        }`}
                       ></i>
                     </div>
                     <div className="ai-bubble">
@@ -176,7 +182,7 @@ const AIChat = () => {
               </div>
 
               {/* Quick Secret Match Suggestion Pill */}
-              <div style={{ textAlign: "center", margin: "2px 0 50px 0" }}>
+              {/* <div style={{ textAlign: "center", margin: "2px 0 50px 0" }}>
                 <button
                   onClick={() =>
                     startSecretMatch(user?.user_feeling || "Normal")
@@ -186,7 +192,7 @@ const AIChat = () => {
                   <i className="fa-solid fa-user-secret"></i> Need a human
                   listener? Find Secret Match
                 </button>
-              </div>
+              </div> */}
 
               {/* Input Area */}
               <div className="ai-input-area">

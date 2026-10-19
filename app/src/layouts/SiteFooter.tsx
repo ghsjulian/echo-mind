@@ -10,7 +10,7 @@ const SiteFooter = () => {
       <div className="footer-grid">
         <div className="footer-brand">
           <a href="#" className="brand-logo">
-            <img src="/icons/echo-mind-2.png" alt="Echo Mind" />
+            <img src="/site-echomind.png" alt="Echo Mind" />
           </a>
           <p>
             A compassionate digital haven combining artificial intelligence with

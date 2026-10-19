@@ -16,7 +16,7 @@ const SiteHeader = () => {
     <>
       <header className="navbar">
         <a href="#" className="brand-logo">
-          <img src="/icons/echo-mind-2.png" alt="Echo Mind" />
+          <img src="/site-echomind.png" alt="Echo Mind" />{" "}
         </a>
 
         <ul className="nav-links">
@@ -45,7 +45,7 @@ const SiteHeader = () => {
         <div className="nav-actions">
           <a
             onClick={(e) => {
-              (e.preventDefault(), initializeUser(navigate));
+              e.preventDefault(), initializeUser(navigate);
             }}
             href="#"
             className="btn btn-primary btn-pulse-glow"
@@ -120,7 +120,7 @@ const SiteHeader = () => {
         >
           <a
             onClick={(e) => {
-              (e.preventDefault(), initializeUser(navigate));
+              e.preventDefault(), initializeUser(navigate);
             }}
             href="#"
             className="btn btn-primary"

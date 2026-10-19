@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app/public/icons/echo-mind.png" width="360" height="80" alt="ECHO MIND AI App"/>
+  <img src="app/public/echomind.png" width="360" height="200" alt="ECHO MIND AI App"/>
 </p>
 
 # Echo Mind — Anonymous Emotional AI & Peer Support Platform

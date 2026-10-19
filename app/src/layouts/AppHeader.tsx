@@ -11,7 +11,7 @@ const AppHeader = () => {
       <div className="left-bar">
         <a href="#" className="nav-brand">
           <div className="brand-logo">
-            <img src="/icons/echo-mind-2.png" alt="Echo Mind" />
+            <img src="/site-echomind.png" alt="Echo Mind" />
           </div>
         </a>
 

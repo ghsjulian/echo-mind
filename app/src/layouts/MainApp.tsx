@@ -17,11 +17,14 @@ const MainApp = () => {
   const navigate = useNavigate();
   const { verifyUser, isVerifying, theme } = useAPI();
   const { isOpenComment } = usePost();
-  const { isNotiOpen, isAI } = useAppStore();
+  const { isNotiOpen, isAI, openAI } = useAppStore();
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     verifyUser(navigate);
+    if (window.innerWidth <= 375) {
+      openAI();
+    }
     //  initNotifications();
   }, []);
 

@@ -124,10 +124,7 @@ body {
   height: 10px;
   background-color: #22c55e; /* Vibrant Emerald Green */
   border-radius: 50%;
-  box-shadow:
-    0 0 8px #22c55e,
-    0 0 16px #22c55e,
-    0 0 24px #22c55e;
+  box-shadow: 0 0 8px #22c55e, 0 0 16px #22c55e, 0 0 24px #22c55e;
   position: relative;
 }
 
@@ -197,10 +194,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  /* color: white; */
   font-size: 20px;
   box-shadow: 0 4px 12px rgba(0, 132, 255, 0.3);
   transition: var(--transition);
+  background: #000;
 }
 
 .nav-brand:hover .brand-logo {
@@ -1357,9 +1355,7 @@ input.comment-input:focus {
 }
 /* Default icon state */
 .action-button.like-btn i {
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 /* When the button has the 'liked' class */
