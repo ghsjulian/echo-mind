@@ -24,7 +24,14 @@ let io: Server | null = null;
 const initializeSocket = (httpServer: HttpServer): Server => {
     if (io) return io;
 
-    const allowedOrigins = Array.isArray(config.CORS_ORIGIN) ? config.CORS_ORIGIN : [config.CORS_ORIGIN];
+    // const allowedOrigins = Array.isArray(config.CORS_ORIGIN) ? config.CORS_ORIGIN : [config.CORS_ORIGIN];
+    const allowedOrigins = [
+        "http://localhost:5000",       // Vite dev server
+        "https://localhost",           // Capacitor Android app
+        "capacitor://localhost",       // Capacitor iOS (optional)
+        config.CORS_ORIGIN,        // your deployed web frontend, if any
+    ].filter(Boolean) as string[];
+
     io = new Server(httpServer, {
         cors: {
             origin: (origin, callback) => {
